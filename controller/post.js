@@ -12,7 +12,7 @@ exports.getAllPosts = async (req,res) => {
     } catch (err) {
         res.status(404).json({
             status : 'failed' ,
-            message : "invalid request"
+            message : "Not Found"
         })
     }
 }
@@ -28,7 +28,7 @@ exports.getPost = async (req,res) => {
     } catch (err) {
         res.status(404).json({
             status : 'failed' ,
-            message : "invalid request"
+            message : "Not Found"
         })
     }
 }
@@ -44,7 +44,7 @@ exports.createPost = async (req,res) => {
     } catch (err) {
         res.status(400).json({
             status : "failure" ,
-            message : "invalid Input"
+            message : "Bad request"
         })
     } 
 }
@@ -62,7 +62,7 @@ exports.updatePost = async (req,res) => {
     } catch (err) {
         res.status(404).json({
             status : 'failed' ,
-            message : "invalid request"
+            message : "Not Found"
         })
     }
 }
@@ -76,7 +76,7 @@ exports.deletePost = async (req,res) => {
     } catch (err) {
         res.status(404).json({
             status : 'failed' ,
-            message : "invalid request"
+            message : "Not Found"
         })
     }
 }
