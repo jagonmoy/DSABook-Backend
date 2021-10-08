@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const app = require('./app');
 const dotenv = require('dotenv');
 
+
 dotenv.config({path : './config.env'})
 
 
@@ -14,8 +15,6 @@ const DatabaseConnection = async () => {
     console.log("Database is Connected")
 }
 DatabaseConnection();
-
-
 
 const port = 3010 || process.env.PORT ;
 

@@ -1,66 +1,82 @@
-const fs = require('fs');
-const posts = JSON.parse(fs.readFileSync('./mock-data/blogs.json'));
+const Post = require('../models/postModel');
 
-
-exports.checkID = (req,res,next,val) => {
-    const post = posts.find(el => el.user_id === val);
-    if (!post) {
-        return res.status(404).json({
-            status : 'Failure' ,
-            message : 'Not found'
+exports.getAllPosts = async (req,res) => {
+    try {
+        const posts = await Post.find(); 
+        res.status(200).json({
+            status : 'success' ,
+            data: {
+                posts
+            }
         });
+    } catch (err) {
+        res.status(404).json({
+            status : 'failed' ,
+            message : "invalid request"
+        })
     }
-    next();
 }
-exports.checkPost = (req,res,next) => {
-    if (!req.body.headline || !req.body.description) {
-        return res.status(404).json({
-            status : 'Failure' ,
-            message : 'Failed to Create a post'
+exports.getPost = async (req,res) => {    
+    try {
+        const post = await Post.findById(req.params.id); 
+        res.status(200).json({
+            status : 'success' ,
+            data: {
+                post
+            }
         });
+    } catch (err) {
+        res.status(404).json({
+            status : 'failed' ,
+            message : "invalid request"
+        })
     }
-    next();
 }
-
-exports.getAllPosts = (req,res) => {
-    res.status(200).json({
-        status : 'success' ,
-        data: {
-            posts
-        }
-    });
-}
-exports.getPost = (req,res) => {    
-    res.status(200).json({
-        status : 'success' ,
-        data: {
-            post
-        }
-    });
-}
-exports.createPost = (req,res) => {
-    const newId = posts.length ;
-    const newPost = Object.assign({user_id : newId},req.body);
-    
-    posts.push(newPost);
-    fs.writeFile('./mock-data/blogs.json',JSON.stringify(posts),(err)=>{
+exports.createPost = async (req,res) => {
+    try {
+        const newPost = await Post.create(req.body);  
         res.status(201).json({
             status : 'success' ,
             data: {
                 newPost
             } 
         });
-    });
+    } catch (err) {
+        res.status(400).json({
+            status : "failure" ,
+            message : "invalid Input"
+        })
+    } 
 }
-exports.updatePost = (req,res) => {
-    res.status(200).json({
-        status : 'success' ,
-        message : 'Post is updated'
-    });
+exports.updatePost = async (req,res) => {
+    try {
+        const post = await Post.findByIdAndUpdate(req.params.id,req.body,{
+            new : true
+        }); 
+        res.status(200).json({
+            status : 'success' ,
+            data: {
+                post
+            }
+        });
+    } catch (err) {
+        res.status(404).json({
+            status : 'failed' ,
+            message : "invalid request"
+        })
+    }
 }
-exports.deletePost = (req,res) => {
-    res.status(200).json({
-        status : 'success' ,
-        message : 'Post is Deleted'
-    });
+exports.deletePost = async (req,res) => {
+    try {
+        await Post.findByIdAndDelete(req.params.id); 
+        res.status(204).json({
+            status : "Deleted Successfully!!" ,
+            data: null
+        });
+    } catch (err) {
+        res.status(404).json({
+            status : 'failed' ,
+            message : "invalid request"
+        })
+    }
 }
