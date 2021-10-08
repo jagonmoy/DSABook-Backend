@@ -7,11 +7,7 @@ dotenv.config({path : './config.env'})
 
 
 const DatabaseConnection = async () => {
-    await mongoose.connect(process.env.DATABASE,{
-        useNewUrlParser : true ,
-        useCreateIndex: true ,
-        useFindAndModify: false
-    });
+    await mongoose.connect(process.env.DATABASE);
     console.log("Database is Connected")
 }
 DatabaseConnection();
