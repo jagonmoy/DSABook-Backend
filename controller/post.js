@@ -1,83 +1,68 @@
 const Post = require("../models/post");
-
+const postFormat = require("../format/post")
+const express = require("express"),
+ negotiate = require("express-negotiate");
+ 
+ 
 exports.getAllPosts = async (req, res) => {
-  try {
-    const posts = await Post.find();
-    res.status(200).json({
-          status: "success",
-          data: {
-           posts,
-          },
-    });
-  } catch (err) {
-    console.log(err.stack);
-    res.status(404).json({
-      status: "failed",
-      message: "Not Found",
-    });
-  }
+ try {
+   const posts = await Post.find();
+   req.negotiate({
+       "application/json": function () {  postFormat.JSONReponse(200,posts,res)},
+       "application/xml" :  function () { postFormat.XMLResponse(200,posts,res)},
+       "application/default": function() { postFormat.defaultResponse(200,posts,res)}
+   });
+ } catch (err) {
+     postFormat.errorResponse(404,res);
+ }
 };
 exports.getPost = async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    res.status(200).json({
-      status: "success",
-      data: {
-        post,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "failed",
-      message: "Not Found",
-    });
-  }
+ try {
+   const post = await Post.findById(req.params.id);
+   req.negotiate({
+    "application/json": function () {  postFormat.JSONReponse(200,post,res)},
+    "application/xml" :  function () { postFormat.XMLResponse(200,post,res)},
+    "application/default": function() { postFormat.defaultResponse(200,posts,res)}
+ });
+} catch (err) {
+  postFormat.errorResponse(404,res);
+}
 };
 exports.createPost = async (req, res) => {
-  try {
-    const newPost = await Post.create(req.body);
-    res.status(201).json({
-      status: "success",
-      data: {
-        newPost,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      status: "failure",
-      message: "Bad request",
-    });
-  }
+ try {
+   const newPost = await Post.create(req.body);
+   req.negotiate({
+    "application/json": function () {  postFormat.JSONReponse(201,newPost,res)},
+    "application/xml" :  function () { postFormat.XMLResponse(201,newPost,res)},
+    "application/default": function() { postFormat.defaultResponse(200,posts,res)}
+ });
+} catch (err) {
+  postFormat.errorResponse(404,res);
+}
 };
 exports.updatePost = async (req, res) => {
-  try {
-    const post = await Post.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
-    res.status(200).json({
-      status: "success",
-      data: {
-        post,
-      },
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "failed",
-      message: "Not Found",
-    });
-  }
+ try {
+   const post = await Post.findByIdAndUpdate(req.params.id, req.body, {
+     new: true,
+   });
+   req.negotiate({
+    "application/json": function () {  postFormat.JSONReponse(200,post,res)},
+    "application/xml" :  function () { postFormat.XMLResponse(200,post,res)},
+    "application/default": function() { postFormat.defaultResponse(200,posts,res)}
+ });
+} catch (err) {
+  postFormat.errorResponse(404,res);
+}
 };
 exports.deletePost = async (req, res) => {
-  try {
-    await Post.findByIdAndDelete(req.params.id);
-    res.status(204).json({
-      status: "Deleted Successfully!!",
-      data: null,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "failed",
-      message: "Not Found",
-    });
-  }
+ try {
+   await Post.findByIdAndDelete(req.params.id);
+   req.negotiate({
+    "application/json": function () {  postFormat.JSONReponse(204,null,res)},
+    "application/xml" :  function () { postFormat.XMLResponse(204,null,res)},
+    "application/default": function() { postFormat.defaultResponse(200,posts,res)}
+ });
+} catch (err) {
+  postFormat.errorResponse(404,res);
+}
 };
