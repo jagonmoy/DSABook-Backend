@@ -7,13 +7,11 @@ const Database = class {
   constructor() {
     if (this.Database) return this.Database;
     else {
-       console.log("kisher vitor ashlam")
        if(process.env.DATABASE_NAME === "MongoDB") this.Database = new Mongo();
        else if (process.env.DATABASE_NAME === "SQL") this.Database = new SQL();
     }
   }
   findAllPosts(req) {
-    console.log("ki khbr");
     return this.Database.findAllPosts(req);
   }
   findPost(req){return this.Database.findPost(req);}
