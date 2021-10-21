@@ -1,5 +1,6 @@
-const MongoPost = require("../../models/post");
 const {General} = require("./general");
+const {APIFeatures} = require("../../apiFeatures/Features");
+const Features = new APIFeatures()
 
 const SQL = class extends General {
     async findAllPosts(req) {

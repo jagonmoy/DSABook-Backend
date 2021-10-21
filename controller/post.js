@@ -5,11 +5,17 @@ const express = require("express"),
 
  const database = new Database();
 
+exports.aliasPosts = async (req,res,next) => {
+  req.query.limit = '3';
+  req.query.sort = '-createdAt,userName';
+  req.query.fields = 'userName,postHeadline,postDescription'
+  next();
+}
+
+
 exports.getAllPosts = async (req, res) => {
  try {
-   console.log("ki khbr");
    const posts = await database.findAllPosts(req);
-   console.log("ki holo re")
    if (!posts) throw new Error;
    req.negotiate({
        "application/json": function () {  postFormat.JSONReponse(200,posts,res)},

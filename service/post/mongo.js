@@ -1,12 +1,22 @@
 const MongoPost = require("../../models/post");
 const {General} = require("./general");
+const {APIFeatures} = require("../../apiFeatures/Features");
+const Features = new APIFeatures()
 
 const Mongo = class extends General {
     async findAllPosts(req) {
-        const queryObj = {...req.query};
-        let query = MongoPost.find(queryObj);
-        const allPosts = await query;
-        return allPosts;
+          const queryObj = Features.filter(req); 
+          let query = MongoPost.find(queryObj);
+          query = Features.sort(query,req);
+          query = Features.limitingFields(query,req);
+          query = Features.paginate(query,req);
+          if (req.query.page) {
+              const numberDocuments = await MongoPost.countDocuments();
+              console.log(numberDocuments);
+              if ( skip >= numberDocuments) return null;
+          }
+          const allPosts = await query;
+          return allPosts;   
     }
     async findPost(req) {
          const post = await MongoPost.findById(req.params.id);
