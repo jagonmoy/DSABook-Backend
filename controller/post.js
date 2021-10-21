@@ -1,13 +1,16 @@
 const postFormat = require("../format/post")
-const {Mongo,SQL} = require("../service/Post")
+const {Database} = require("../service/post/postService")
 const express = require("express"),
  negotiate = require("express-negotiate");
 
+ const database = new Database();
+
 exports.getAllPosts = async (req, res) => {
  try {
-   const database = new Mongo();
-   const posts = await database.findAllPosts();
-   
+   console.log("ki khbr");
+   const posts = await database.findAllPosts(req);
+   console.log("ki holo re")
+   if (!posts) throw new Error;
    req.negotiate({
        "application/json": function () {  postFormat.JSONReponse(200,posts,res)},
        "application/xml" :  function () { postFormat.XMLResponse(200,posts,res)},
@@ -19,7 +22,6 @@ exports.getAllPosts = async (req, res) => {
 };
 exports.getPost = async (req, res) => {
  try {
-   const database = new Mongo();
    const post = await database.findPost(req);
    req.negotiate({
     "application/json": function ()  {  postFormat.JSONReponse(200,post,res)},
@@ -32,7 +34,6 @@ exports.getPost = async (req, res) => {
 };
 exports.createPost = async (req, res) => {
  try {
-   const database = new Mongo();
    const newPost = await database.createPost(req);
    req.negotiate({
     "application/json": function () {  postFormat.JSONReponse(201,newPost,res)},
@@ -45,7 +46,6 @@ exports.createPost = async (req, res) => {
 };
 exports.updatePost = async (req, res) => {
  try {
-  const database = new Mongo();
   const post = await database.updatePost(req);
    req.negotiate({
     "application/json": function () {  postFormat.JSONReponse(200,post,res)},
@@ -58,7 +58,6 @@ exports.updatePost = async (req, res) => {
 };
 exports.deletePost = async (req, res) => {
  try {
-   const database = new Mongo();
    await database.deletePost(req);
    req.negotiate({
     "application/json": function () {  postFormat.JSONReponse(204,null,res)},
