@@ -1,9 +1,15 @@
 const blogFormat = require("../format/blog")
-const {Database} = require("../service/blog/blogService")
+const {BlogService} = require("../service/blogService")
+const {MongoDao} = require("../dao/mongoDao")
+const {MysqlDao} = require("../dao/mysqlDao")
 const express = require("express"),
  negotiate = require("express-negotiate");
 
- const database = new Database();
+
+const currentDatabase = new MongoDao();
+// const currentDatabase = new MysqlDao();
+const blogService = new BlogService(currentDatabase);
+
 
 exports.aliasBlogs = async (req,res,next) => {
   req.query.limit = '3';
@@ -16,8 +22,7 @@ exports.aliasBlogs = async (req,res,next) => {
 
 exports.getAllBlogs = async (req, res) => {
  try {
-   console.log("Shob blog ki dekha jai")
-   const blogs = await database.findAllBlogs(req);
+   const blogs = await blogService.getAllBlogs(req);
    if (!blogs) throw new Error;
    req.negotiate({
        "application/json": function () {  blogFormat.JSONReponse(200,blogs,res)},
@@ -30,7 +35,7 @@ exports.getAllBlogs = async (req, res) => {
 };
 exports.getBlog = async (req, res) => {
  try {
-   const blog = await database.findBlog(req);
+   const blog = await blogService.getBlog(req);
    req.negotiate({
     "application/json": function ()  { blogFormat.JSONReponse(200,blog,res)},
     "application/xml" :  function () { blogFormat.XMLResponse(200,blog,res)},
@@ -42,7 +47,7 @@ exports.getBlog = async (req, res) => {
 };
 exports.createBlog = async (req, res) => {
  try {
-   const newBlog = await database.createBlog(req);
+   const newBlog = await blogService.createBlog(req);
    req.negotiate({
     "application/json": function () {  blogFormat.JSONReponse(201,newBlog,res)},
     "application/xml" :  function () { blogFormat.XMLResponse(201,newBlog,res)},
@@ -54,7 +59,7 @@ exports.createBlog = async (req, res) => {
 };
 exports.updateBlog = async (req, res) => {
  try {
-  const blog = await database.updateBlog(req);
+  const blog = await blogService.updateBlog(req);
    req.negotiate({
     "application/json": function () {  blogFormat.JSONReponse(200,blog,res)},
     "application/xml" :  function () { blogFormat.XMLResponse(200,blog,res)},
@@ -66,7 +71,7 @@ exports.updateBlog = async (req, res) => {
 };
 exports.deleteBlog = async (req, res) => {
  try {
-   await database.deleteBlog(req);
+   await blogService.deleteBlog(req);
    req.negotiate({
     "application/json": function () {  blogFormat.JSONReponse(204,null,res)},
     "application/xml" :  function () { blogFormat.XMLResponse(204,null,res)},
