@@ -4,11 +4,11 @@ const General = class {
         throw new Error("Abstract classes can't be instantiated.");
       }
     }
-    async findAllPosts(req) {}
-    async findPost(req) {}
-    async createPost(req) {}
-    async updatePost(req) {}
-    async deletePost(req) {}
+    async findAllBlogs(req) {}
+    async findBlog(req) {}
+    async createBlog(req) {}
+    async updateBlog(req) {}
+    async deleteBlog(req) {}
  }
 
  module.exports = {General};

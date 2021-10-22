@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 dotenv.config({path : './config.env'})
-const {Mongo} = require("./mongo");
-const {SQL} = require("./sql");
+const {Mongo} = require("./mongoService");
+const {SQL} = require("./sqlService");
 
 const Database = class {
   constructor() {
@@ -11,13 +11,13 @@ const Database = class {
        else if (process.env.DATABASE_NAME === "SQL") this.Database = new SQL();
     }
   }
-  findAllPosts(req) {
-    return this.Database.findAllPosts(req);
+  findAllBlogs(req) {
+    return this.Database.findAllBlogs(req);
   }
-  findPost(req){return this.Database.findPost(req);}
-  createPost(req){return this.Database.createPost(req);}
-  updatePost(req){return this.Database.updatePost(req);}
-  deletePost(req){return this.Database.deletePost(req);}  
+  findBlog(req){return this.Database.findBlog(req);}
+  createBlog(req){return this.Database.createBlog(req);}
+  updateBlog(req){return this.Database.updateBlog(req);}
+  deleteBlog(req){return this.Database.deleteBlog(req);}  
 }
 
 module.exports = {Database}

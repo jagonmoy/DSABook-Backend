@@ -1,5 +1,5 @@
 const express = require('express');
-const postRouter = require('./routes/post');
+const blogRouter = require('./routes/blog');
 const morgan = require('morgan');
 
 const app = express();
@@ -9,7 +9,7 @@ const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 
-app.use('/api/posts',postRouter);
+app.use('/api/blogs',blogRouter);
 
 
 module.exports = app ;

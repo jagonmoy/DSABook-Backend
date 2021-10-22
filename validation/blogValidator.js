@@ -1,18 +1,18 @@
 const { body, validationResult } = require('express-validator')
  
-exports.createPostValidation = () => {
+exports.createBlogValidation = () => {
  return [
    body('userName').isLength({ min: 5 , max: 30}).withMessage('name must be between 10 to 30 letter'),
-   body('postHeadline').isLength({ min: 5 , max: 30}).withMessage('Headline must be between 5 to 30 letter'),
-   body('postDescription').isLength({ min: 5 , max: 2000}).withMessage('description must be between 5 to 2000 letter'),
+   body('blogHeadline').isLength({ min: 5 , max: 30}).withMessage('Headline must be between 5 to 30 letter'),
+   body('blogDescription').isLength({ min: 5 , max: 2000}).withMessage('description must be between 5 to 2000 letter'),
  ]
 }
  
-exports.updatePostValidation = () => {
+exports.updateBlogValidation = () => {
    return [
        body('userName').isLength({ min: 5 , max: 30}).withMessage('name must be between 10 to 30 letter'),
-       body('postHeadline').isLength({ min: 5 , max: 30}).withMessage('Headline must be between 5 to 30 letter'),
-       body('postDescription').isLength({ min: 5 , max: 2000}).withMessage('description must be between 5 to 2000 letter'),
+       body('blogHeadline').isLength({ min: 5 , max: 30}).withMessage('Headline must be between 5 to 30 letter'),
+       body('blogDescription').isLength({ min: 5 , max: 2000}).withMessage('description must be between 5 to 2000 letter'),
    ]
 }
  
