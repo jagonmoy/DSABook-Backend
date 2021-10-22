@@ -1,6 +1,7 @@
 const  MongoBlog = require("../models/blog");
 const {BlogDao} = require ("./blogDao");
 const {APIFeatures} = require("../apiFeatures/features");
+const {BlogDto} = require("../dto/blog");
 const Features = new APIFeatures()
 
 class MongoDao extends BlogDao {
@@ -15,22 +16,26 @@ class MongoDao extends BlogDao {
             console.log(numberDocuments);
             if ( skip >= numberDocuments) return null;
         }
-        const allBlogs = await query;
+        const mongoBlogs = await query;
+        let allBlogs  = [] ;
+        for ( let i = 0 ; i < mongoBlogs.length; i++) {
+            allBlogs[i] = new BlogDto(mongoBlogs[i]);
+        }
         return allBlogs;   
     }
     async getBlog(req) {
         const blog = await MongoBlog.findById(req.params.id);
-        return blog ;
+        return new BlogDto(blog) ;
     }
     async createBlog(req) {
         const newBlog = await MongoBlog.create(req.body);
-        return newBlog;
+        return new BlogDto(newBlog);
     }
     async updateBlog(req) {
         const blog = await MongoBlog.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
         });
-        return blog ;
+        return new BlogDto(blog);
     }
     async deleteBlog(req){
         await MongoBlog.findByIdAndDelete(req.params.id);
