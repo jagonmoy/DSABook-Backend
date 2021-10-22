@@ -4,21 +4,11 @@ const General = class {
         throw new Error("Abstract classes can't be instantiated.");
       }
     }
-    async findAllPosts(req) {
-      throw new Error("Method must be implemented.");
-    }
-    async findPost(req) {
-      throw new Error("Method must be implemented.");
-    }
-    async createPost(req) {
-      throw new Error("Method must be implemented.");
-    }
-    async updatePost(req) {
-      throw new Error("Method must be implemented.");
-    }
-    async deletePost(req) {
-      throw new Error("Method must be implemented.");
-    }
+    async findAllPosts(req) {}
+    async findPost(req) {}
+    async createPost(req) {}
+    async updatePost(req) {}
+    async deletePost(req) {}
  }
 
  module.exports = {General};

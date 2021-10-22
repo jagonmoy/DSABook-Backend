@@ -1,8 +1,5 @@
 
 const APIFeatures = class {
-    constructor() {
-        console.log("class call hoyeche")
-    }
     filter(req) {
         const queryObj = {...req.query};
         const excludedfields = ['sort','fields','page','limit'];
