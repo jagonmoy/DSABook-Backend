@@ -1,7 +1,6 @@
 const js2xmlparser = require("js2xmlparser");
 
 exports.JSONReponse = (statusCode,blogs,res) => {
-    console.log("dekha jacche nah");
     res.status(statusCode).json({
         data: {
             blogs,
@@ -20,7 +19,6 @@ exports.errorResponse = (statusCode,res) => {
       });
 }
 exports.defaultReponse = (statusCode,blogs,res) => {
-    console.log("dekha jacche nah")
     res.status(statusCode).json({
         data: {
             blogs,
