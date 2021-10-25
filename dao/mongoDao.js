@@ -1,22 +1,17 @@
-const  MongoBlog = require("../models/blog");
+const  MongoBlog = require("../models/blogModel");
 const {BlogDao} = require ("./blogDao");
-const {APIFeatures} = require("../apiFeatures/features");
-const {BlogDto} = require("../dto/blog");
-const Features = new APIFeatures()
+const {mongoAPIFeatures} = require("../apiFeatures/mongoFeatures");
+const {BlogDto} = require("../dto/blogDto");
+const mongoFeatures = new mongoAPIFeatures()
 
 class MongoDao extends BlogDao {
     async getAllBlogs(req) {
-        const queryObj = Features.filter(req); 
-        let query = MongoBlog.find(queryObj);
-        query = Features.sort(query,req);
-        query = Features.limitingFields(query,req);
-        query = Features.paginate(query,req);
-        if (req.query.page) {
-            const numberDocuments = await MongoBlog.countDocuments();
-            console.log(numberDocuments);
-            if ( skip >= numberDocuments) return null;
-        }
+        let query = mongoFeatures.filter(req); 
+        query = mongoFeatures.sort(query,req);
+        query = mongoFeatures.limitingFields(query,req);
+        query = mongoFeatures.paginate(query,req);
         const mongoBlogs = await query;
+        if (!mongoBlogs.length) return null ;
         let allBlogs  = [] ;
         for ( let i = 0 ; i < mongoBlogs.length; i++) {
             allBlogs[i] = new BlogDto(mongoBlogs[i]);

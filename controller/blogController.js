@@ -1,4 +1,4 @@
-const blogFormat = require("../format/blog")
+const blogFormat = require("../format/blogFormat")
 const {BlogService} = require("../service/blogService")
 const {MongoDao} = require("../dao/mongoDao")
 const {MysqlDao} = require("../dao/mysqlDao")
