@@ -1,4 +1,4 @@
-const blogFormat = require("../format/blogFormat")
+const blogFormat = require("../Response/blogResponse")
 const {BlogService} = require("../service/blogService")
 const {MongoDao} = require("../dao/mongoDao")
 const {MysqlDao} = require("../dao/mysqlDao")
@@ -14,7 +14,7 @@ const blogService = new BlogService(currentDatabase);
 exports.aliasBlogs = async (req,res,next) => {
   req.query.limit = '3';
   req.query.sort = '-createdAt,userName';
-  req.query.fields = 'userName,blogHeadline,blogDescription'
+  req.query.fields = 'userName,blogHeadline,blogDescription,createdAt,_id'
   next();
 }
 
