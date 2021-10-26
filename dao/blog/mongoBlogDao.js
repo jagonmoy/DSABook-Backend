@@ -1,10 +1,10 @@
-const  MongoBlog = require("../models/blogModel");
+const  MongoBlog = require("../../models/blogModel");
 const {BlogDao} = require ("./blogDao");
-const {mongoAPIFeatures} = require("../apiFeatures/mongoFeatures");
-const {BlogDto} = require("../dto/blogDto");
+const {mongoAPIFeatures} = require("../../apiFeatures/mongoFeatures");
+const {BlogDto} = require("../../dto/blogDto");
 const mongoFeatures = new mongoAPIFeatures()
 
-class MongoDao extends BlogDao {
+class MongoBlogDao extends BlogDao {
     async getAllBlogs(req) {
         let query = mongoFeatures.filter(req); 
         query = mongoFeatures.sort(query,req);
@@ -37,4 +37,4 @@ class MongoDao extends BlogDao {
     }
 }
 
-module.exports = {MongoDao};
+module.exports = {MongoBlogDao};
