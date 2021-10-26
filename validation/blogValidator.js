@@ -9,12 +9,12 @@ exports.createBlogValidation = () => {
 }
  
 exports.updateBlogValidation = () => {
+
   return [
-    body('userName').isLength({ min: 5 , max: 30}).withMessage('name must be between 10 to 30 letter'),
-    body('blogHeadline').isLength({ min: 5 , max: 30}).withMessage('Headline must be between 5 to 30 letter'),
-    body('blogDescription').isLength({ min: 5 , max: 2000}).withMessage('description must be between 5 to 2000 letter'),
-   ] 
-   
+    body('userName').if(body('userName').exists()).isLength({ min: 5 , max: 30}).withMessage('name must be between 10 to 30 letter'),
+    body('blogHeadline').if(body('blogHeadline').exists()).isLength({ min: 5 , max: 30}).withMessage('Headline must be between 5 to 30 letter'),
+    body('blogDescription').if(body('blogDescription').exists()).isLength({ min: 5 , max: 2000}).withMessage('description must be between 5 to 2000 letter'),
+   ]
 }
  
 exports.validate = (req, res, next) => {
