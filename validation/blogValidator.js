@@ -1,4 +1,4 @@
-const { body, validationResult } = require('express-validator')
+const { body, validationResult,check } = require('express-validator')
  
 exports.createBlogValidation = () => {
  return [
@@ -9,11 +9,12 @@ exports.createBlogValidation = () => {
 }
  
 exports.updateBlogValidation = () => {
-   return [
-       body('userName').isLength({ min: 5 , max: 30}).withMessage('name must be between 10 to 30 letter'),
-       body('blogHeadline').isLength({ min: 5 , max: 30}).withMessage('Headline must be between 5 to 30 letter'),
-       body('blogDescription').isLength({ min: 5 , max: 2000}).withMessage('description must be between 5 to 2000 letter'),
-   ]
+  return [
+    body('userName').isLength({ min: 5 , max: 30}).withMessage('name must be between 10 to 30 letter'),
+    body('blogHeadline').isLength({ min: 5 , max: 30}).withMessage('Headline must be between 5 to 30 letter'),
+    body('blogDescription').isLength({ min: 5 , max: 2000}).withMessage('description must be between 5 to 2000 letter'),
+   ] 
+   
 }
  
 exports.validate = (req, res, next) => {
