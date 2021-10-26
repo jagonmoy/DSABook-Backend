@@ -1,15 +1,16 @@
 const mongoose = require("mongoose");
 
-const postSchema = new mongoose.Schema({
+
+const blogSchema = new mongoose.Schema({
   userName: {
     type: String,
     required:true
   },
-  postHeadline: {
+  blogHeadline: {
     type: String,
     required:true
   },
-  postDescription: {
+  blogDescription: {
     type: String,
     required:true
   }
@@ -17,6 +18,6 @@ const postSchema = new mongoose.Schema({
   timestamps : true
 });
 
-const Post = mongoose.model("Post", postSchema);
+const Blog = mongoose.model("Blog", blogSchema);
 
-module.exports = Post;
+module.exports = Blog;
