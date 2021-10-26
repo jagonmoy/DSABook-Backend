@@ -5,6 +5,7 @@ class UserDao {
         }
       }
     async createUser(req) {}
+    async getAllUsers(req){}
 }
 
 module.exports = {UserDao}
