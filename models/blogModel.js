@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const blogSchema = new mongoose.Schema({
   userName: {
     type: String,
