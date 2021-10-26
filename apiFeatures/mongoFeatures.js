@@ -1,13 +1,14 @@
+const MongoBlog = require("../models/blogModel");
 
-const APIFeatures = class {
+class mongoAPIFeatures {
     filter(req) {
         const queryObj = {...req.query};
         const excludedfields = ['sort','fields','page','limit'];
         excludedfields.forEach(el => delete queryObj[el]);
-        return queryObj ;
+        let query = MongoBlog.find(queryObj);
+        return query;
     }
     sort(query,req){
-        console.log(req.query);
         if (req.query.sort) {
             const sortBy = req.query.sort.split(',').join(' ');
             query = query.sort(sortBy);
@@ -31,8 +32,12 @@ const APIFeatures = class {
         const limit = req.query.limit * 1 || 3 ;
         const skip = (page-1)*limit ;
         query = query.skip(skip).limit(limit);
+        if (req.query.page) {
+            const numberDocuments = MongoBlog.countDocuments();
+            if ( skip >= numberDocuments) return null;
+        }
         return query;
     }    
 
 }
-module.exports = {APIFeatures};
+module.exports = {mongoAPIFeatures};
