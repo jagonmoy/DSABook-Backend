@@ -4,9 +4,11 @@ const {UserDto} = require("../../dto/userDto");
 
 
 class MongoUserDao extends UserDao {
-    
     async createUser(req) {
-        const newUser = await mongoUser.create(req.body);
+        const {email} = req.body;
+        let newUser = await mongoUser.findOne({email});
+        if (newUser) return null;
+        newUser = await mongoUser.create(req.body);
         return new UserDto(newUser);
     }
     async getAllUsers(req) {
@@ -18,6 +20,15 @@ class MongoUserDao extends UserDao {
         }
         return allUsers;   
     }
+    async signinUser(req) {
+        const {email,password} = req.body;
+        const user = await mongoUser.findOne({email}).select('password');
+        if (!user) return null ;
+        if (!await user.matchPasswords(password,user.password)) return null ;
+        else console.log(user)
+        return new UserDto(user);
+    }
+    
 }
 
 module.exports = {MongoUserDao};

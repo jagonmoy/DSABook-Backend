@@ -8,6 +8,10 @@ class UserService {
     getAllUsers(req) {
         return this.userDao.getAllUsers(req);
     }
+    signinUser(req){
+        console.log("service class er vitor dhuklam")
+        return this.userDao.signinUser(req);
+    }
   
   }
   

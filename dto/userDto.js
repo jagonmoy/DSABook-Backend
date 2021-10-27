@@ -1,6 +1,7 @@
 class UserDto {
     constructor(user) {
-        let userDto = JSON.parse(JSON.stringify(user));
+        console.log(user);
+        const userDto = JSON.parse(JSON.stringify(user));
         this.userName = userDto.userName;
         this.email = userDto.email;
         this.password = userDto.password;

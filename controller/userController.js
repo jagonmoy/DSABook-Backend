@@ -1,4 +1,4 @@
-const response = require("../utils/response")
+const response = require("../utils/userResponse")
 const {UserService} = require("../service/userService")
 const {MongoUserDao} = require("../dao/user/mongoUserDao")
 const express = require("express"),
@@ -12,11 +12,11 @@ exports.getAllUsers = async (req, res) => {
  try {
    const users = await userService.getAllUsers(req);
    req.negotiate({
-       "application/json": function () { response.JSONReponse(200,users,res)},
-       "application/xml" :  function () { response.XMLResponse(200,users,res)},
-       "application/default": function() { response.defaultResponse(200,users,res)}
+       "application/json": function () { response.JSONUserReponse(200,users,res)},
+       "application/xml" :  function () { response.XMLUserResponse(200,users,res)},
+       "application/default": function() { response.defaultUserResponse(200,users,res)}
    });
  } catch (err) {
-     response.errorResponse(404,res);
+     response.errorUserResponse(404,res);
  }
 };
