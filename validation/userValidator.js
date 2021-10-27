@@ -4,21 +4,17 @@ exports.signupUserValidation = () => {
  return [
    check('userName','name must be between 5 to 30 letters').isLength({ min: 5 , max: 30}),
    check('email','Email should be valid').isEmail(),
-   check("password","Please enter a password at least 8 character and contain At least one uppercase.At least one lower case.At least one special character. ").isLength({ min: 8 }).matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d@$.!%*#?&]/),
+   check("password","password at least 8 character and contain At least one uppercase.At least one lower case.At least one special character. ").isLength({ min: 8 }).matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d@$.!%*#?&]/),
    check('confirmPassword').custom((value, { req }) => {
-      if (value !== req.body.password) {
-          console.log(req.body.password);
-          console.log(value);
-      throw new Error('Password Does not match');
-    }
-    return true
+      if (value !== req.body.password) throw new Error('Password Does not match');
+      return true
   }),
  ]
 }
  exports.signinUserValidation = () => {
   return [
-    check('userName','User Name Filed Should Not be Empty').exists(),
-    check('email','Email Field should Not be Empty').exists().bail().check('email','Email Should be Valid').isEmail(),
+    check('email','Email field should not be Empty and it should be valid').notEmpty().isEmail(),
+    check('password','Password filed should not be Empty').notEmpty(),
    ]
 }
  
