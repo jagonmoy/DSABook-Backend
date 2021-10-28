@@ -44,4 +44,3 @@ exports.signin = async (req, res) => {
       response.errorAuthResponse(404,error.message,res);
   }
  };
-

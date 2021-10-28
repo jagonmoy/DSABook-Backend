@@ -1,22 +1,25 @@
 const js2xmlparser = require("js2xmlparser");
 
-exports.JSONBlogReponse = (statusCode,blogs,res) => {
+exports.JSONAuthReponse = (statusCode,user,token,status,res) => {
     res.status(statusCode).json({
-        blogs
+        status,
+        token,
+        user
      });
 }
-exports.XMLBlogResponse = (statusCode,blogs,res) => {
-    res.status(statusCode).send(js2xmlparser.parse("blogs",JSON.parse(JSON.stringify(blogs))));
+exports.XMLAuthResponse = (statusCode,users,token,status,res) => {
+    res.status(statusCode).send(js2xmlparser.parse("users",JSON.parse(JSON.stringify(users))));
 }
 
-exports.errorBlogResponse = (statusCode,res) => {
+exports.errorAuthResponse = (statusCode,error,res) => {
     res.status(statusCode).json({
         status: "failed",
-        message: "Not Found",
+        message: error,
       });
 }
-exports.defaultBlogReponse = (statusCode,blogs,res) => {
+exports.defaultAuthReponse = (statusCode,users,token,status,res) => {
     res.status(statusCode).json({
-        blogs
+        token,
+        users
      });
 }
