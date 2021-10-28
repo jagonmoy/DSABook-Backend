@@ -1,18 +1,23 @@
 const {promisify} = require('util')
 const response = require("../utils/authResponse")
 const {UserService} = require("../service/userService")
+const {BlogService} = require("../service/blogService")
 const {MongoUserDao} = require("../dao/user/mongoUserDao")
+const {MongoBlogDao} = require("../dao/blog/mongoBlogDao")
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken')
 const express = require("express"),
  negotiate = require("express-negotiate");
  dotenv.config({path : './config.env'})
-const currentDatabase = new MongoUserDao();
+const mongoBlogDatabase = new MongoUserDao();
  // const currentDatabase = new MysqlDao();
-const userService = new UserService(currentDatabase);
+const userService = new UserService(mongoBlogDatabase);
+const mongoUserDatabase = new MongoBlogDao();
+// const currentDatabase = new MysqlDao();
+const blogService = new BlogService(mongoUserDatabase);
 
-const signinToken = (id) => {
-  return jwt.sign({id : id},process.env.JWT_SECRET,{
+const signinToken = (username) => {
+  return jwt.sign({username : username},process.env.JWT_SECRET,{
     expiresIn: process.env.JWT_EXPIRE
   })
 }
@@ -20,8 +25,8 @@ const signinToken = (id) => {
 exports.signup = async (req, res) => {
  try {
    const newUser = await userService.createUser(req);
-   if(!newUser) throw new Error('Email Already Exists');
-   const token = signinToken(newUser.id);
+   if(!newUser) throw new Error('Email or Username Already Exists');
+   const token = signinToken(newUser.username);
    req.negotiate({
     "application/json": function () {  response.JSONAuthReponse(200,newUser,token,"Account is Created Successfully!",res)},
     "application/xml" :  function () { response.XMLAuthResponse(200,newUser,token,"Account is Created Successfully!",res)},
@@ -35,7 +40,7 @@ exports.signin = async (req, res) => {
   try {
     const user = await userService.signinUser(req);
     if (!user) throw new Error('Incorrect Email or Password');
-    const token = signinToken(user.id);
+    const token = signinToken(user.username);
     req.negotiate({
      "application/json": function () {  response.JSONAuthReponse(200,user,token,"Signed in Successfully!",res)},
      "application/xml" :  function () { response.XMLAuthResponse(200,user,token,"Signed in Successfully!",res)},
@@ -57,12 +62,25 @@ exports.signin = async (req, res) => {
     catch(error) {
       return response.errorAuthResponse(401,"Invalid Token,Token Expiry is Over or It Does not Exist",res);
     }
-    const legitUser = await userService.getUser(decoded.id);
+    
+    /*
+    const legitUser = await userService.getUser(decoded.username);
     if(!legitUser) return response.errorAuthResponse(401,"Token Belongs To the User Does not Exits",res);
-    if(await userService.changePasswordAfter(decoded.id,decoded.iat)) response.errorAuthResponse(401,"Passowrd was Changed , Login Again",res);; 
+    if(await userService.changePasswordAfter(decoded.username,decoded.iat)) response.errorAuthResponse(401,"Password was Changed , Login Again",res);
+    */
+
+    req.body.username = decoded.username;
     next();
   } catch (error) {
       response.errorAuthResponse(404,error.message,res);
   }
  };
+ exports.restrictTo = () => { 
+   return async (req,res,next) => {
+     const blog = await blogService.getBlog(req);
+     if (!blog) return response.errorAuthResponse(404,"Blog Does not Exist",res);
+     if (blog.username !== req.body.username) return response.errorAuthResponse(403,"Not Have permission to delete or update",res);
+     next();
+   }
+ }
 

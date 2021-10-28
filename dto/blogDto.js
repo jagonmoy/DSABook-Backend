@@ -1,7 +1,7 @@
 class BlogDto {
     constructor(blog) {
-        let blogDto = JSON.parse(JSON.stringify(blog));
-        this.userName = blogDto.userName;
+        const blogDto = JSON.parse(JSON.stringify(blog));
+        this.username = blogDto.username;
         this.blogDescription = blogDto.blogDescription;
         this.blogHeadline = blogDto.blogHeadline;
         this.createdAt = blogDto.createdAt;

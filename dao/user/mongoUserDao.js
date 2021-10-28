@@ -5,11 +5,13 @@ const {UserDto} = require("../../dto/userDto");
 
 class MongoUserDao extends UserDao {
     async createUser(req) {
-        const {email} = req.body;
-        let newUser = await mongoUser.findOne({email});
-        if (newUser) return null;
-        newUser = await mongoUser.create(req.body);
-        return new UserDto(newUser);
+        const {email,username} = req.body;
+        let newUserEmail = await mongoUser.findOne({email});
+        if (newUserEmail) return null;
+        let newUserUsername = await mongoUser.findOne({username});
+        if (newUserUsername) return null;
+        newUserUsername = await mongoUser.create(req.body);
+        return new UserDto(newUserUsername);
     }
     async getAllUsers(req) {
         const mongoUsers= await mongoUser.find(req.body);
@@ -20,8 +22,8 @@ class MongoUserDao extends UserDao {
         }
         return allUsers;   
     }
-    async getUser(id) {
-        const user = await mongoUser.findById(id);
+    async getUser(username) {
+        const user = await mongoUser.findOne({username});
         if (!user) return null ;
         return new UserDto(user) ;
     }
@@ -32,8 +34,8 @@ class MongoUserDao extends UserDao {
         if (!await user.matchPasswords(password,user.password)) return null ;
         return new UserDto(user);
     }
-    async changePasswordAfter(id,JWTTimeStamp) {
-       const user = await mongoUser.findById(id)
+    async changePasswordAfter(username,JWTTimeStamp) {
+       const user = await mongoUser.findOne({username});
        return await user.changePasswordAfter(JWTTimeStamp)
     }
     

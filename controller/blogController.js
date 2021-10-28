@@ -10,16 +10,6 @@ const currentDatabase = new MongoBlogDao();
 // const currentDatabase = new MysqlDao();
 const blogService = new BlogService(currentDatabase);
 
-
-exports.aliasBlogs = async (req,res,next) => {
-  req.query.limit = '3';
-  req.query.sort = '-createdAt,userName';
-  req.query.fields = 'userName,blogHeadline,blogDescription,createdAt,_id'
-  next();
-}
-
-
-
 exports.getAllBlogs = async (req, res) => {
  try {
    const blogs = await blogService.getAllBlogs(req);
@@ -49,6 +39,7 @@ exports.getBlog = async (req, res) => {
 exports.createBlog = async (req, res) => {
  try {
    const newBlog = await blogService.createBlog(req);
+   console.log("notun blog",newBlog)
    req.negotiate({
     "application/json": function () {  response.JSONBlogResponse(201,newBlog,res)},
     "application/xml" :  function () { response.JSONBlogResponse(201,newBlog,res)},
@@ -79,6 +70,6 @@ exports.deleteBlog = async (req, res) => {
     "application/default": function() { response.defaultBlogReponse(200,blogs,res)}
  });
 } catch (err) {
-  response.errorBlogResponse(404,"Blog deleteion Unsuccessful",res);
+  response.errorBlogResponse(404,"Blog deletion Unsuccessful",res);
 }
 };

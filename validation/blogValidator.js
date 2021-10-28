@@ -1,19 +1,16 @@
-const { body, validationResult,check } = require('express-validator')
+const {validationResult,check } = require('express-validator')
  
 exports.createBlogValidation = () => {
  return [
-   body('userName').isLength({ min: 5 , max: 30}).withMessage('name must be between 10 to 30 letter'),
-   body('blogHeadline').isLength({ min: 5 , max: 30}).withMessage('Headline must be between 5 to 30 letter'),
-   body('blogDescription').isLength({ min: 5 , max: 2000}).withMessage('description must be between 5 to 2000 letter'),
+  check('blogHeadline','Headline must be between 5 to 30 letter').isLength({ min: 5 , max: 30}),
+  check('blogDescription','description must be between 5 to 2000 letter').isLength({ min: 5 , max: 2000})
  ]
 }
  
 exports.updateBlogValidation = () => {
-
   return [
-    body('userName').if(body('userName').exists()).isLength({ min: 5 , max: 30}).withMessage('name must be between 10 to 30 letter'),
-    body('blogHeadline').if(body('blogHeadline').exists()).isLength({ min: 5 , max: 30}).withMessage('Headline must be between 5 to 30 letter'),
-    body('blogDescription').if(body('blogDescription').exists()).isLength({ min: 5 , max: 2000}).withMessage('description must be between 5 to 2000 letter'),
+   check('blogHeadline','Headline must be between 5 to 30 letter').if(check('blogHeadline').exists()).isLength({ min: 5 , max: 30}),
+   check('blogDescription','description must be between 5 to 2000 letter').if(check('blogDescription').exists()).isLength({ min: 5 , max: 2000})
    ]
 }
  

@@ -11,13 +11,14 @@ class UserService {
     async signinUser(req){
         return this.userDao.signinUser(req);
     }
-    async getUser(id) {
-        return this.userDao.getUser(id)
+    async getUser(username) {
+        return this.userDao.getUser(username)
     }
-    async changePasswordAfter(id,time) {
-        return await this.userDao.changePasswordAfter(id,time);
+    /*
+    async changePasswordAfter(username,time) {
+        return await this.userDao.changePasswordAfter(username,time);
     }
-  
+    */
   }
   
   module.exports = {UserService}
