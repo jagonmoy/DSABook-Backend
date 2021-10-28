@@ -8,6 +8,7 @@ class UserDto {
         this.confirmPassword = userDto.confirmPassword
         this.createdAt = userDto.createdAt;
         this.id = userDto._id;
+        this.lastPasswordChangedAt = userDto.passwordChangedAt;
     }
 }
 

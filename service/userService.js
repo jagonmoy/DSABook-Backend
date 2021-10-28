@@ -2,14 +2,20 @@ class UserService {
     constructor(userDao) {
       this.userDao = userDao;
     }
-    createUser(req){
+    async createUser(req){
         return this.userDao.createUser(req);
     }
-    getAllUsers(req) {
+    async getAllUsers(req) {
         return this.userDao.getAllUsers(req);
     }
-    signinUser(req){
+    async signinUser(req){
         return this.userDao.signinUser(req);
+    }
+    async getUser(id) {
+        return this.userDao.getUser(id)
+    }
+    async changePasswordAfter(id,time) {
+        return await this.userDao.changePasswordAfter(id,time);
     }
   
   }

@@ -20,13 +20,21 @@ class MongoUserDao extends UserDao {
         }
         return allUsers;   
     }
+    async getUser(id) {
+        const user = await mongoUser.findById(id);
+        if (!user) return null ;
+        return new UserDto(user) ;
+    }
     async signinUser(req) {
         const {email,password} = req.body;
         const user = await mongoUser.findOne({email}).select('password');
         if (!user) return null ;
         if (!await user.matchPasswords(password,user.password)) return null ;
-        else console.log(user)
         return new UserDto(user);
+    }
+    async changePasswordAfter(id,JWTTimeStamp) {
+       const user = await mongoUser.findById(id)
+       return await user.changePasswordAfter(JWTTimeStamp)
     }
     
 }

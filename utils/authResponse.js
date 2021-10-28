@@ -14,7 +14,7 @@ exports.XMLAuthResponse = (statusCode,users,token,status,res) => {
 exports.errorAuthResponse = (statusCode,error,res) => {
     res.status(statusCode).json({
         status: "failed",
-        message: error,
+        error,
       });
 }
 exports.defaultAuthReponse = (statusCode,users,token,status,res) => {

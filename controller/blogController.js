@@ -23,26 +23,27 @@ exports.aliasBlogs = async (req,res,next) => {
 exports.getAllBlogs = async (req, res) => {
  try {
    const blogs = await blogService.getAllBlogs(req);
-   if (!blogs) throw new Error;
+   if (!blogs) throw new Error("Blogs not found");
    req.negotiate({
        "application/json": function () {  response.JSONBlogResponse(200,blogs,res)},
        "application/xml" :  function () { response.JSONBlogResponse(200,blogs,res)},
        "application/default": function() { response.defaultBlogReponse(200,blogs,res)}
    });
- } catch (err) {
-     response.errorBlogResponse(404,res);
+ } catch (error) {
+     response.errorBlogResponse(404,error.message,res);
  }
 };
 exports.getBlog = async (req, res) => {
  try {
    const blog = await blogService.getBlog(req);
+   if(!blog) throw new Error("This Blog does not Exist")
    req.negotiate({
     "application/json": function ()  { response.JSONBlogResponse(200,blog,res)},
     "application/xml" :  function () { response.JSONBlogResponse(200,blog,res)},
     "application/default": function(){ response.defaultBlogReponse(200,blog,res)}
  });
-} catch (err) {
-  response.errorBlogResponse(404,res);
+} catch (error) {
+  response.errorBlogResponse(404,error.message,res);
 }
 };
 exports.createBlog = async (req, res) => {
@@ -51,10 +52,10 @@ exports.createBlog = async (req, res) => {
    req.negotiate({
     "application/json": function () {  response.JSONBlogResponse(201,newBlog,res)},
     "application/xml" :  function () { response.JSONBlogResponse(201,newBlog,res)},
-    "application/default": function() { response.defaultBlogReponse(200,newBlog,res)}
+    "application/default": function() { response.defaultBlogReponse(201,newBlog,res)}
  });
-} catch (err) {
-  response.errorBlogResponse(404,res);
+} catch (error) {
+  response.errorBlogResponse(424,"Blog Creation Unsuccessful",res);
 }
 };
 exports.updateBlog = async (req, res) => {
@@ -66,7 +67,7 @@ exports.updateBlog = async (req, res) => {
     "application/default": function() { response.defaultBlogReponse(200,blog,res)}
  });
 } catch (err) {
-  response.errorBlogResponse(404,res);
+  response.errorBlogResponse(404,"Blog updation unsuccessful",res);
 }
 };
 exports.deleteBlog = async (req, res) => {
@@ -78,6 +79,6 @@ exports.deleteBlog = async (req, res) => {
     "application/default": function() { response.defaultBlogReponse(200,blogs,res)}
  });
 } catch (err) {
-  response.errorBlogResponse(404,res);
+  response.errorBlogResponse(404,"Blog deleteion Unsuccessful",res);
 }
 };

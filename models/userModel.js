@@ -21,7 +21,8 @@ const userSchema = new mongoose.Schema({
      type: String,
      required: true,
      select: false,
-  }
+  },
+  passwordChangedAt: Date,
 },{
   timestamps : true
 });
@@ -37,6 +38,13 @@ userSchema.methods.matchPasswords = async (givenPassword,actualPassword) => {
      return await bcrypt.compare(givenPassword,actualPassword);
 }
 
+userSchema.methods.changePasswordAfter = function(JWTTimeStamp) {
+  if (this.passwordChangedAt) {
+    const changedTimeStamp = parseInt(this.passwordChangedAt.getTime() / 1000,10) ;
+    return JWTTimeStamp < changedTimeStamp ;
+  }
+  return false ;
+}
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;

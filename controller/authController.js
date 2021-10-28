@@ -1,3 +1,4 @@
+const {promisify} = require('util')
 const response = require("../utils/authResponse")
 const {UserService} = require("../service/userService")
 const {MongoUserDao} = require("../dao/user/mongoUserDao")
@@ -41,6 +42,27 @@ exports.signin = async (req, res) => {
      "application/default": function() { response.defaultAuthResponse(200,user,token,"Signed in Successfully!",res)}
   });
   } catch (error) {
+      response.errorAuthResponse(401,error.message,res);
+  }
+ };
+ exports.protect = async(req, res,next) => {
+  try {
+    let token ;
+    if (req.headers.token) token = req.headers.token;
+    if (!token) return response.errorAuthResponse(401,"You are not logged in");
+    let decoded;
+    try {
+      decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET);    
+    }
+    catch(error) {
+      return response.errorAuthResponse(401,"Invalid Token,Token Expiry is Over or It Does not Exist",res);
+    }
+    const legitUser = await userService.getUser(decoded.id);
+    if(!legitUser) return response.errorAuthResponse(401,"Token Belongs To the User Does not Exits",res);
+    if(await userService.changePasswordAfter(decoded.id,decoded.iat)) response.errorAuthResponse(401,"Passowrd was Changed , Login Again",res);; 
+    next();
+  } catch (error) {
       response.errorAuthResponse(404,error.message,res);
   }
  };
+
