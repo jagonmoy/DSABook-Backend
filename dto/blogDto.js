@@ -5,6 +5,7 @@ class BlogDto {
         this.blogDescription = blogDto.blogDescription;
         this.blogHeadline = blogDto.blogHeadline;
         this.createdAt = blogDto.createdAt;
+        this.updatedAt = blogDto.updatedAt;
         this.id = blogDto._id;
     }
 }

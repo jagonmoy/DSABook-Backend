@@ -4,7 +4,6 @@ class UserDao {
           throw new Error("Abstract classes can't be instantiated.");
         }
       }
-    async createUser(req) {}
     async getAllUsers(req){}
     async getUser(id){}
 }

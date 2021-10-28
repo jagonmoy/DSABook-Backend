@@ -25,7 +25,6 @@ class MongoBlogDao extends BlogDao {
     }
     async createBlog(req) {
         const newBlog = await MongoBlog.create(req.body);
-        console.log(newBlog);
         return new BlogDto(newBlog);
     }
     async updateBlog(req) {

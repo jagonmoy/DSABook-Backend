@@ -1,19 +1,18 @@
 const response = require("../utils/blogResponse")
 const {BlogService} = require("../service/blogService")
 const {MongoBlogDao} = require("../dao/blog/mongoBlogDao")
-const {MysqlDao} = require("../dao/blog/mysqlBlogDao")
+const {MysqlBlogDao} = require("../dao/blog/mysqlBlogDao")
 const express = require("express"),
  negotiate = require("express-negotiate");
 
 
-const currentDatabase = new MongoBlogDao();
-// const currentDatabase = new MysqlDao();
-const blogService = new BlogService(currentDatabase);
+const mongoBlogDao = new MongoBlogDao();
+const blogService = new BlogService(mongoBlogDao);
 
 exports.getAllBlogs = async (req, res) => {
  try {
    const blogs = await blogService.getAllBlogs(req);
-   if (!blogs) throw new Error("Blogs not found");
+   if (!blogs) return response.errorBlogResponse(404,"Blogs not found",res);
    req.negotiate({
        "application/json": function () {  response.JSONBlogResponse(200,blogs,res)},
        "application/xml" :  function () { response.JSONBlogResponse(200,blogs,res)},
@@ -26,7 +25,7 @@ exports.getAllBlogs = async (req, res) => {
 exports.getBlog = async (req, res) => {
  try {
    const blog = await blogService.getBlog(req);
-   if(!blog) throw new Error("This Blog does not Exist")
+   if(!blog) return response.errorBlogResponse(404,"This Blog does not Exist",res)
    req.negotiate({
     "application/json": function ()  { response.JSONBlogResponse(200,blog,res)},
     "application/xml" :  function () { response.JSONBlogResponse(200,blog,res)},
@@ -39,7 +38,6 @@ exports.getBlog = async (req, res) => {
 exports.createBlog = async (req, res) => {
  try {
    const newBlog = await blogService.createBlog(req);
-   console.log("notun blog",newBlog)
    req.negotiate({
     "application/json": function () {  response.JSONBlogResponse(201,newBlog,res)},
     "application/xml" :  function () { response.JSONBlogResponse(201,newBlog,res)},
