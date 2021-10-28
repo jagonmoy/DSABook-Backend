@@ -48,8 +48,8 @@ exports.signin = async (req, res) => {
  exports.protect = async(req, res,next) => {
   try {
     let token ;
-    if (req.headers.token) token = req.headers.token;
-    if (!token) return response.errorAuthResponse(401,"You are not logged in");
+    if (req.headers.authorization) token = req.headers.authorization;
+    if (token == undefined) return response.errorAuthResponse(401,"You are not logged in");
     let decoded;
     try {
       decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET);    
