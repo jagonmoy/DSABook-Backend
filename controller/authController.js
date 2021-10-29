@@ -65,7 +65,6 @@ exports.signin = async (req, res) => {
       return response.errorAuthResponse(401,"You are not logged in",res);
     }
     token = req.headers.authorization;
-
     let decoded;
     try {
       decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET);    
@@ -84,12 +83,4 @@ exports.signin = async (req, res) => {
       response.errorAuthResponse(404,error.message,res);
   }
  };
- exports.restrictTo = () => { 
-   return async (req,res,next) => {
-     const blog = await blogService.getBlog(req);
-     if (!blog) return response.errorAuthResponse(404,"Blog Does not Exist",res);
-     if (blog.username !== req.body.username) return response.errorAuthResponse(403,"Not Have permission to delete or update",res);
-     next();
-   }
- }
 

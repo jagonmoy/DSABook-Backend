@@ -49,18 +49,28 @@ exports.createBlog = async (req, res) => {
 };
 exports.updateBlog = async (req, res) => {
  try {
-  const blog = await blogService.updateBlog(req);
+  let blog = await blogService.getBlog(req);
+  if (!blog) return response.errorBlogResponse(404,"Blog Does not Exist",res);
+
+  if (blog.username !== req.body.username) return response.errorBlogResponse(403,"Not Have permission to Update",res);
+
+  blog = await blogService.updateBlog(req);
    req.negotiate({
     "application/json": function () {  response.JSONBlogResponse(200,blog,res)},
     "application/xml" :  function () { response.JSONBlogResponse(200,blog,res)},
     "application/default": function() { response.defaultBlogReponse(200,blog,res)}
  });
 } catch (err) {
-  response.errorBlogResponse(404,"Blog updation unsuccessful",res);
+  response.errorBlogResponse(404,err.message,res);
 }
 };
 exports.deleteBlog = async (req, res) => {
  try {
+   let blog = await blogService.getBlog(req);
+   if (!blog) return response.errorBlogResponse(404,"Blog Does not Exist",res);
+
+   if (blog.username !== req.body.username) return response.errorBlogResponse(403,"Not Have permission to delete",res);
+
    await blogService.deleteBlog(req);
    req.negotiate({
     "application/json": function () {  response.JSONBlogResponse(204,null,res)},
