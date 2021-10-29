@@ -1,6 +1,6 @@
 const  MongoBlog = require("../../models/blogModel");
 const {BlogDao} = require ("./blogDao");
-const {mongoAPIFeatures} = require("../../apiFeatures/mongoBlogFeatures");
+const {mongoAPIFeatures} = require("../../utils/apiFeatures/mongoBlogFeatures");
 const {BlogDto} = require("../../dto/blogDto");
 const mongoFeatures = new mongoAPIFeatures()
 

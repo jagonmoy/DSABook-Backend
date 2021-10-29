@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken')
-const response = require("../utils/authResponse")
+const response = require("../utils/response/authResponse")
 const {AuthService} = require("../service/authService")
 const {MongoAuthDao} = require("../dao/auth/mongoAuthDao")
+const  sendJWTToken = require("../utils/sendJWTToken")
 const dotenv = require('dotenv');
 const express = require("express"),
  negotiate = require("express-negotiate");
@@ -9,20 +9,6 @@ const express = require("express"),
 
 const mongoAuthDao = new MongoAuthDao();
 const authService = new AuthService(mongoAuthDao);
-
-const sendToken = (username) => {
-  const token =  jwt.sign({username : username},process.env.JWT_SECRET,{
-    expiresIn: process.env.JWT_EXPIRE
-  })
-  const cookieOptions = {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRE*24*60*60*1000  
-    ),
-    //secure: true
-    httpOnly: true
-  };
-  return {cookieOptions,token};
-}
 
 exports.signup = async (req, res) => {
  try {
@@ -43,7 +29,7 @@ exports.signin = async (req, res) => {
     const user = await authService.signinUser(req);
     if (typeof user === "string") return response.errorAuthResponse(401,user,res);
 
-    const {cookieOptions,token} = sendToken(user.username); 
+    const {cookieOptions,token} = sendJWTToken.sendToken(user.username); 
     
     res.cookie("jwt",cookieOptions,token);
      

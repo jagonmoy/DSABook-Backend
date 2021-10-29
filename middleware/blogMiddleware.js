@@ -1,5 +1,5 @@
 const {promisify} = require('util')
-const response = require("../utils/authResponse")
+const response = require("../utils/response/authResponse")
 const jwt = require('jsonwebtoken')
 const {UserService} = require("../service/userService")
 const {MongoUserDao} = require("../dao/user/mongoUserDao")

@@ -1,4 +1,4 @@
-const response = require("../utils/userResponse")
+const response = require("../utils/response/userResponse")
 const {UserService} = require("../service/userService")
 const {MongoUserDao} = require("../dao/user/mongoUserDao")
 const express = require("express"),

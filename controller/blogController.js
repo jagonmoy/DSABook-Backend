@@ -1,4 +1,4 @@
-const response = require("../utils/blogResponse")
+const response = require("../utils/response/blogResponse")
 const {BlogService} = require("../service/blogService")
 const {MongoBlogDao} = require("../dao/blog/mongoBlogDao")
 const {MysqlBlogDao} = require("../dao/blog/mysqlBlogDao")

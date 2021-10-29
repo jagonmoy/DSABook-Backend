@@ -1,4 +1,4 @@
-const MongoBlog = require("../models/blogModel");
+const MongoBlog = require("../../models/blogModel");
 
 class mongoAPIFeatures {
     filter(req) {

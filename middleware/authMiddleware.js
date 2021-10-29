@@ -1,5 +1,5 @@
 const {promisify} = require('util')
-const response = require("../utils/authResponse")
+const response = require("../utils/response/authResponse")
 const jwt = require('jsonwebtoken')
 
 exports.isSignedIn = async(req, res,next) => {
