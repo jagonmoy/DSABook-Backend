@@ -4,8 +4,8 @@ class AuthDao {
           throw new Error("Abstract classes can't be instantiated.");
         }
       }
-    async signupUser(req){}
-    async signinUser(req){}
+    async signupUser(){}
+    async signinUser(){}
 }
 
 module.exports = {AuthDao}

@@ -65,7 +65,7 @@ exports.deleteBlog = async (req, res) => {
    req.negotiate({
     "application/json": function () {  response.JSONBlogResponse(204,null,res)},
     "application/xml" :  function () { response.JSONBlogResponse(204,null,res)},
-    "application/default": function() { response.defaultBlogReponse(200,blogs,res)}
+    "application/default": function() { response.defaultBlogReponse(200,null,res)}
  });
 } catch (err) {
   response.errorBlogResponse(404,"Blog deletion Unsuccessful",res);

@@ -4,11 +4,11 @@ class BlogDao {
           throw new Error("Abstract classes can't be instantiated.");
         }
       }
-    async getAllBlogs(req) {}
-    async getBlog(req) {}
-    async createBlog(req) {}
-    async updateBlog(req) {}
-    async deleteBlog(req) {}
+    async getAllBlogs() {}
+    async getBlog() {}
+    async createBlog() {}
+    async updateBlog() {}
+    async deleteBlog() {}
 }
 
 module.exports = {BlogDao}

@@ -4,8 +4,8 @@ class UserDao {
           throw new Error("Abstract classes can't be instantiated.");
         }
       }
-    async getAllUsers(req){}
-    async getUser(id){}
+    async getAllUsers(){}
+    async getUser(){}
 }
 
 module.exports = {UserDao}

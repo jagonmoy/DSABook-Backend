@@ -30,7 +30,9 @@ exports.signup = async (req, res) => {
  try {
    const newUser = await authService.signupUser(req);
    if(!newUser) return response.errorAuthResponse(403,'Email or Username Already Exists',res);
+
    const token = signinToken(newUser.username);
+
    req.negotiate({
     "application/json": function () {  response.JSONAuthReponse(200,newUser,token,"Account is Created Successfully!",res)},
     "application/xml" :  function () { response.XMLAuthResponse(200,newUser,token,"Account is Created Successfully!",res)},
@@ -44,7 +46,9 @@ exports.signin = async (req, res) => {
   try {
     const user = await authService.signinUser(req);
     if (!user) return response.errorAuthResponse(401,'Incorrect Email or Password',res);
+
     const token = signinToken(user.username);
+
     req.negotiate({
      "application/json": function () {  response.JSONAuthReponse(200,user,token,"Signed in Successfully!",res)},
      "application/xml" :  function () { response.XMLAuthResponse(200,user,token,"Signed in Successfully!",res)},
@@ -61,6 +65,7 @@ exports.signin = async (req, res) => {
       return response.errorAuthResponse(401,"You are not logged in",res);
     }
     token = req.headers.authorization;
+
     let decoded;
     try {
       decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET);    
@@ -68,10 +73,12 @@ exports.signin = async (req, res) => {
     catch(error) {
       return response.errorAuthResponse(401,"Invalid Token,Token Expiry is Over or It Does not Exist",res);
     }
+
     const legitUser = await userService.getUser(decoded.username);
     if(typeof legitUser.username === "undefined") return response.errorAuthResponse(401,"Token Belongs To the User Does not Exits",res);
 
     req.body.username = decoded.username;
+
     next();
   } catch (error) {
       response.errorAuthResponse(404,error.message,res);
