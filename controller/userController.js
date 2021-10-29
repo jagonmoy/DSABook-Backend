@@ -22,7 +22,7 @@ exports.getAllUsers = async (req, res) => {
 exports.getUser = async (req, res) => {
   try {
     const user = await userService.getUser(req.params.username);
-    if(!user) return response.errorUserResponse(404,"This user does not Exist",res)
+    if(typeof user === "string") return response.errorUserResponse(404,user,res)
     req.negotiate({
      "application/json": function ()  { response.JSONUserResponse(200,user,res)},
      "application/xml" :  function () { response.XNLUserResponse(200,user,res)},

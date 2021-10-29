@@ -12,7 +12,7 @@ const blogService = new BlogService(mongoBlogDao);
 exports.getAllBlogs = async (req, res) => {
  try {
    const blogs = await blogService.getAllBlogs(req);
-   if (!blogs) return response.errorBlogResponse(404,"Blogs not found",res);
+   if (typeof blogs === "string") return response.errorBlogResponse(404,blogs,res);
    req.negotiate({
        "application/json": function () {  response.JSONBlogResponse(200,blogs,res)},
        "application/xml" :  function () { response.JSONBlogResponse(200,blogs,res)},
@@ -25,7 +25,7 @@ exports.getAllBlogs = async (req, res) => {
 exports.getBlog = async (req, res) => {
  try {
    const blog = await blogService.getBlog(req);
-   if(!blog) return response.errorBlogResponse(404,"This Blog does not Exist",res)
+   if(typeof blog === "string") return response.errorBlogResponse(404,blog,res)
    req.negotiate({
     "application/json": function ()  { response.JSONBlogResponse(200,blog,res)},
     "application/xml" :  function () { response.JSONBlogResponse(200,blog,res)},
@@ -50,7 +50,7 @@ exports.createBlog = async (req, res) => {
 exports.updateBlog = async (req, res) => {
  try {
   let blog = await blogService.getBlog(req);
-  if (!blog) return response.errorBlogResponse(404,"Blog Does not Exist",res);
+  if(typeof blog === "string") return response.errorBlogResponse(404,blog,res)
 
   if (blog.username !== req.body.username) return response.errorBlogResponse(403,"Not Have permission to Update",res);
 
@@ -67,7 +67,7 @@ exports.updateBlog = async (req, res) => {
 exports.deleteBlog = async (req, res) => {
  try {
    let blog = await blogService.getBlog(req);
-   if (!blog) return response.errorBlogResponse(404,"Blog Does not Exist",res);
+   if(typeof blog === "string") return response.errorBlogResponse(404,blog,res)
 
    if (blog.username !== req.body.username) return response.errorBlogResponse(403,"Not Have permission to delete",res);
 

@@ -6,7 +6,7 @@ const {UserDto} = require("../../dto/userDto");
 class MongoUserDao extends UserDao {
     async getAllUsers(req) {
         const mongoUsers= await mongoUser.find(req.body);
-        if (!mongoUsers.length) return null ;
+        if (!mongoUsers.length) return "users Don't Exist" ;
         let allUsers  = [] ;
         for ( let i = 0 ; i < mongoUsers.length; i++) {
             allUsers[i] = new UserDto(mongoUsers[i]);
@@ -15,7 +15,7 @@ class MongoUserDao extends UserDao {
     }
     async getUser(username) {
         const user = await mongoUser.findOne({username});
-        if (!user) return null ;
+        if (!user) return "This Username doesnot exist" ;
         return new UserDto(user) ;
     }
 }
