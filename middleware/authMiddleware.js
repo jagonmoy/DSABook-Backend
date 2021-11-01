@@ -9,7 +9,7 @@ exports.isSignedIn = async(req, res,next) => {
           const decoder = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
           if (decoder.username !== "undefined") return response.errorAuthResponse(404,"Sign Out First And Then Try Again!",res);
           next()
-      } catch {
+      } catch { 
          next();
       }
     } 
