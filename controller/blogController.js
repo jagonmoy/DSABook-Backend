@@ -9,26 +9,43 @@ const express = require("express"),
 const mongoBlogDao = new MongoBlogDao();
 const blogService = new BlogService(mongoBlogDao);
 
+
 exports.getAllBlogs = async (req, res) => {
  try {
    const blogs = await blogService.getAllBlogs(req);
-   if (typeof blogs === "string") return response.errorBlogResponse(404,blogs,res);
-   req.negotiate({
-       "application/json": function () {  response.JSONBlogResponse(200,blogs,res)},
-       "application/xml" :  function () { response.JSONBlogResponse(200,blogs,res)},
-       "application/default": function() { response.defaultBlogReponse(200,blogs,res)}
-   });
- } catch (error) {
-     response.errorBlogResponse(404,error.message,res);
+   if (typeof blogs === "string") {
+       req.negotiate({
+           "application/json": function () { response.JSONErrorResponse(404,blogs,res,"json")},
+           "application/xml" :  function () { response.XMLErrorResponse(404,blogs,res,"xml")},
+           "application/default": function() { response.JSONErrorResponse(404,blogs,res,"json")},
+       });
+       return ;
+   }
+   else {
+       req.negotiate({
+           "application/json": function () { response.JSONBlogResponse(200,blogs,res,"json")},
+           "application/xml" :  function () { response.XMLBlogResponse(200,blogs,res,"xml")},
+           "application/default": function() { response.JSONBlogResponse(200,blogs,res,"json")},
+       });
+   }
+ } 
+ catch (error) {
+       req.negotiate({
+           "application/json": function () { response.JSONErrorResponse(404,error.message,res,"json")},
+           "application/xml" :  function () { response.XMLErrorResponse(404,error.message,res,"xml")},
+           "application/default": function() { response.JSONErrorResponse(404,error.message,res,"json")},
+       });
  }
 };
+
+
 exports.getBlog = async (req, res) => {
  try {
    const blog = await blogService.getBlog(req);
    if(typeof blog === "string") return response.errorBlogResponse(404,blog,res)
    req.negotiate({
     "application/json": function ()  { response.JSONBlogResponse(200,blog,res)},
-    "application/xml" :  function () { response.JSONBlogResponse(200,blog,res)},
+    "application/xml" :  function () { response.XMLBlogResponse(200,blog,res)},
     "application/default": function(){ response.defaultBlogReponse(200,blog,res)}
  });
 } catch (error) {
@@ -40,7 +57,7 @@ exports.createBlog = async (req, res) => {
    const newBlog = await blogService.createBlog(req);
    req.negotiate({
     "application/json": function () {  response.JSONBlogResponse(201,newBlog,res)},
-    "application/xml" :  function () { response.JSONBlogResponse(201,newBlog,res)},
+    "application/xml" :  function () { response.XMLBlogResponse(201,newBlog,res)},
     "application/default": function() { response.defaultBlogReponse(201,newBlog,res)}
  });
 } catch (error) {
@@ -57,7 +74,7 @@ exports.updateBlog = async (req, res) => {
   blog = await blogService.updateBlog(req);
    req.negotiate({
     "application/json": function () {  response.JSONBlogResponse(200,blog,res)},
-    "application/xml" :  function () { response.JSONBlogResponse(200,blog,res)},
+    "application/xml" :  function () { response.XMLBlogResponse(200,blog,res)},
     "application/default": function() { response.defaultBlogReponse(200,blog,res)}
  });
 } catch (err) {
@@ -74,7 +91,7 @@ exports.deleteBlog = async (req, res) => {
    await blogService.deleteBlog(req);
    req.negotiate({
     "application/json": function () {  response.JSONBlogResponse(204,null,res)},
-    "application/xml" :  function () { response.JSONBlogResponse(204,null,res)},
+    "application/xml" :  function () { response.XMLBlogResponse(204,null,res)},
     "application/default": function() { response.defaultBlogReponse(200,null,res)}
  });
 } catch (err) {

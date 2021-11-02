@@ -4,8 +4,8 @@
     "description": "A CRUD project build with Nodejs",
     "main": "app.js",
     "scripts": {
-        "start": "nodemon server.js" ,
-        "test" : "jest"
+        "start": "nodemon server.js",
+        "test": "jest --detectOpenHandles"
     },
     "repository": {
         "type": "git",
@@ -33,6 +33,7 @@
     },
     "devDependencies": {
         "jest": "^27.3.1",
+        "sinon": "^11.1.2",
         "supertest": "^6.1.6"
     }
 }

@@ -1,21 +1,24 @@
 const js2xmlparser = require("js2xmlparser");
 
-exports.JSONBlogResponse = (statusCode,blogs,res) => {
+exports.JSONBlogResponse = (statusCode,blogs,res,format) => {
     res.status(statusCode).json({
+        format,
         blogs
      });
 }
-exports.XMLBlogResponse = (statusCode,blogs,res) => {
-    res.status(statusCode).send(js2xmlparser.parse("blogs",JSON.parse(JSON.stringify(blogs))));
+exports.XMLBlogResponse = (statusCode,blogs,res,format) => {
+    const blogsWithFormatDeclared = {
+        format,
+        blogs
+    }
+    res.status(statusCode).send(js2xmlparser.parse("blogs",JSON.parse(JSON.stringify(blogsWithFormatDeclared))));
 }
 
-exports.errorBlogResponse = (statusCode,error,res) => {
+exports.JSONErrorResponse = (statusCode,error,res) => {
     res.status(statusCode).json({
         error,
       });
 }
-exports.defaultBlogResponse = (statusCode,blogs,res) => {
-    res.status(statusCode).json({
-        blogs
-     });
+exports.XMLErrorResponse = (statusCode,error,res) => {
+    res.status(statusCode).send(js2xmlparser.parse("error",JSON.parse(JSON.stringify(error))));
 }
