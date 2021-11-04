@@ -5,20 +5,10 @@ exports.JSONBlogResponse = (statusCode,blogs,res,format) => {
         format,
         blogs
      });
+    
 }
 exports.XMLBlogResponse = (statusCode,blogs,res,format) => {
-    const blogsWithFormatDeclared = {
-        format,
-        blogs
-    }
-    res.status(statusCode).send(js2xmlparser.parse("blogs",JSON.parse(JSON.stringify(blogsWithFormatDeclared))));
-}
+    res.type('application/xml');
+    res.status(statusCode).send(js2xmlparser.parse("blogs",JSON.parse(JSON.stringify({format,blogs}))));
 
-exports.JSONErrorResponse = (statusCode,error,res) => {
-    res.status(statusCode).json({
-        error,
-      });
-}
-exports.XMLErrorResponse = (statusCode,error,res) => {
-    res.status(statusCode).send(js2xmlparser.parse("error",JSON.parse(JSON.stringify(error))));
 }
