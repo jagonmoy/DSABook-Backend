@@ -1,5 +1,5 @@
 const {promisify} = require('util')
-const response = require("../utils/response/authResponse")
+const contentNegotiation = require("../utils/contentNegotiation")
 const jwt = require('jsonwebtoken')
 const {UserService} = require("../service/userService")
 const {MongoUserDao} = require("../dao/user/mongoUserDao")
@@ -11,7 +11,7 @@ exports.protect = async(req, res,next) => {
     try {
       let token ;
       if (typeof req.headers.authorization === "undefined") {
-        return response.errorAuthResponse(401,"You are not logged in",res);
+        return contentNegotiation.sendAuthResponse(401,"You are not logged in",req,res,null);
       }
       else token = req.headers.authorization;
 
@@ -24,13 +24,13 @@ exports.protect = async(req, res,next) => {
       }
       
       const legitUser = await userService.getUser(decoded.username);
-      if(typeof legitUser.username === "undefined") return response.errorAuthResponse(401,"Token Belongs To the User Does not Exits",res);
+      if(typeof legitUser.username === "undefined") rcontentNegotiation.sendAuthResponse(401,"Token Belongs To the User Does not Exits",req,res,null);
   
       req.body.username = decoded.username;
   
       next();
     } 
     catch (error) {
-      response.errorAuthResponse(404,error.message,res);
+      contentNegotiation.sendAuthResponse(404,error.message,req,res,null);
     }
 };

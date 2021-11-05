@@ -1,111 +1,69 @@
-const response = require("../utils/response/blogResponse")
-const {BlogService} = require("../service/blogService")
-const {MongoBlogDao} = require("../dao/blog/mongoBlogDao")
-const {MysqlBlogDao} = require("../dao/blog/mysqlBlogDao")
-const express = require("express"),
- negotiate = require("express-negotiate");
-
+const contentNegotiation = require("../utils/contentNegotiation")
+const { BlogService } = require("../service/blogService");
+const { MongoBlogDao } = require("../dao/blog/mongoBlogDao");
+const { MysqlBlogDao } = require("../dao/blog/mysqlBlogDao");
 
 const mongoBlogDao = new MongoBlogDao();
 const blogService = new BlogService(mongoBlogDao);
 
+exports.blogService = blogService ;
 
 exports.getAllBlogs = async (req, res) => {
- try {
-   const blogs = await blogService.getAllBlogs(req);
-   if (typeof blogs === "string") {
-       req.negotiate({
-           "application/json": function () { response.JSONBlogResponse(404,blogs,res,"json")},
-           "application/xml" :  function () { response.XMLBlogResponse(404,blogs,res,"xml")},
-           "application/default": function() { response.JSONBlogResponse(404,blogs,res,"json")},
-       });
-       return ;
-   }
-   else {
-       req.negotiate({
-           "application/json": function () { response.JSONBlogResponse(200,blogs,res,"json")},
-           "application/xml" :  function () { response.XMLBlogResponse(200,blogs,res,"xml")},
-           "application/default": function() { response.JSONBlogResponse(200,blogs,res,"json")},
-       });
-   }
- } 
- catch (error) {
-       req.negotiate({
-           "application/json": function () { response.JSONBlogResponse(404,error.message,res,"json")},
-           "application/xml" :  function () { response.XMLBlogResponse(404,error.message,res,"xml")},
-           "application/default": function() { response.JSONBlogResponse(404,error.message,res,"json")},
-       });
- }
+  try {
+      const blogs = await blogService.getAllBlogs(req);
+      if (typeof blogs === "string") return contentNegotiation.sendBlogResponse(404,blogs,req,res)
+      else return contentNegotiation.sendBlogResponse(200,blogs,req,res)
+  } 
+  catch (error) { 
+    contentNegotiation.sendBlogResponse(404,error.message,req,res)    
+  }
 };
 
 
 exports.getBlog = async (req, res) => {
- try {
-   const blog = await blogService.getBlog(req);
-   if(typeof blog === "string") {
-      req.negotiate({
-         "application/json": function () { response.JSONBlogResponse(404,blog,res,"json")},
-         "application/xml" :  function () { response.XMLBlogResponse(404,blog,res,"xml")},
-         "application/default": function() { response.JSONBlogResponse(404,blog,res,"json")},
-      });
-      return
-   }
-   req.negotiate({
-    "application/json": function () { response.JSONBlogResponse(200,blog,res,"json")},
-    "application/xml" :  function () { response.XMLBlogResponse(200,blog,res,"xml")},
-    "application/default": function() { response.JSONBlogResponse(200,blog,res,"json")},
- });
-} catch (error) {
-  req.negotiate({
-    "application/json": function () { response.JSONBlogResponse(404,error.message,res,"json")},
-    "application/xml" :  function () { response.XMLBlogResponse(404,error.message,res,"xml")},
-    "application/default": function() { response.JSONBlogResponse(404,error.message,res,"json")},
- });
-}
+  try {
+    const blog = await blogService.getBlog(req);
+    if(typeof blog === "string") return contentNegotiation.sendBlogResponse(404,blog,req,res)
+    else return contentNegotiation.sendBlogResponse(200,blog,req,res)
+  }
+  catch (error) {
+    
+    contentNegotiation.sendBlogResponse(404,error.message,req,res) 
+  }
 };
+
+
 exports.createBlog = async (req, res) => {
- try {
-   const newBlog = await blogService.createBlog(req);
-   req.negotiate({
-    "application/json": function () {  response.JSONBlogResponse(201,newBlog,res)},
-    "application/xml" :  function () { response.XMLBlogResponse(201,newBlog,res)},
-    "application/default": function() { response.defaultBlogReponse(201,newBlog,res)}
- });
-} catch (error) {
-  response.errorBlogResponse(424,"Blog Creation Unsuccessful",res);
-}
+  try {
+    const newBlog = await blogService.createBlog(req);
+    contentNegotiation.sendBlogResponse(201,newBlog,req,res)
+  } catch (error) {
+    contentNegotiation.sendBlogResponse(404,"Blog Creation Unsuccessful",req,res) 
+  }
 };
+
 exports.updateBlog = async (req, res) => {
- try {
-  let blog = await blogService.getBlog(req);
-  if(typeof blog === "string") return response.errorBlogResponse(404,blog,res)
-
-  if (blog.username !== req.body.username) return response.errorBlogResponse(403,"Not Have permission to Update",res);
-
-  blog = await blogService.updateBlog(req);
-   req.negotiate({
-    "application/json": function () {  response.JSONBlogResponse(200,blog,res)},
-    "application/xml" :  function () { response.XMLBlogResponse(200,blog,res)},
-    "application/default": function() { response.defaultBlogReponse(200,blog,res)}
- });
-} catch (err) {
-  response.errorBlogResponse(404,err.message,res);
-}
+  try {
+    let blog = await blogService.getBlog(req);
+    if (typeof blog === "string") return contentNegotiation.sendBlogResponse(404,blog,req,res)
+    if (blog.username !== req.body.username) return contentNegotiation.sendBlogResponse(403,"Not Have permission to Update",req,res)
+    blog = await blogService.updateBlog(req);
+    contentNegotiation.sendBlogResponse(403,blog,req,res)
+  } catch (err) {
+    contentNegotiation.sendBlogResponse(404,error.message,req,res)
+  }
 };
+
 exports.deleteBlog = async (req, res) => {
- try {
-   let blog = await blogService.getBlog(req);
-   if(typeof blog === "string") return response.errorBlogResponse(404,blog,res)
+  try {
+    const blog = await blogService.getBlog(req);
+    if (typeof blog === "string") return contentNegotiation.sendBlogResponse(404,blog,req,res)
+    if (blog.username !== req.body.username) return contentNegotiation.sendBlogResponse(403, "Not Have permission to delete",req,res)
+    await blogService.deleteBlog(req);
+    contentNegotiation.sendBlogResponse(403,"Blog Deleted",req,res)
+  } catch (err) {
+    contentNegotiation.sendBlogResponse(404,error.message,req,res)
+  }
 
-   if (blog.username !== req.body.username) return response.errorBlogResponse(403,"Not Have permission to delete",res);
-
-   await blogService.deleteBlog(req);
-   req.negotiate({
-    "application/json": function () {  response.JSONBlogResponse(204,null,res)},
-    "application/xml" :  function () { response.XMLBlogResponse(204,null,res)},
-    "application/default": function() { response.defaultBlogReponse(200,null,res)}
- });
-} catch (err) {
-  response.errorBlogResponse(404,"Blog deletion Unsuccessful",res);
-}
 };
+

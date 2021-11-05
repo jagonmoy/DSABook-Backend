@@ -1,58 +1,43 @@
-const response = require("../utils/response/authResponse")
+const contentNegotiation = require("../utils/contentNegotiation")
 const {AuthService} = require("../service/authService")
 const {MongoAuthDao} = require("../dao/auth/mongoAuthDao")
 const  sendJWTToken = require("../utils/sendJWTToken")
 const dotenv = require('dotenv');
-const express = require("express"),
- negotiate = require("express-negotiate");
- dotenv.config({path : './config.env'})
+dotenv.config({path : './config.env'})
 
 const mongoAuthDao = new MongoAuthDao();
 const authService = new AuthService(mongoAuthDao);
 
 exports.signup = async (req, res) => {
  try {
+   console.log("ssss")
    const newUser = await authService.signupUser(req);
-   if(typeof newUser === "string") return response.errorAuthResponse(403,newuser,res);
-  
-   req.negotiate({
-    "application/json": function () {  response.JSONAuthReponse(200,newUser,null,"Account is Created Successfully!",res)},
-    "application/xml" :  function () { response.XMLAuthResponse(200,newUser,null,"Account is Created Successfully!",res)},
-    "application/default": function() { response.defaultAuthResponse(200,newUser,null,"Account is Created Successfully!",res)}
- });
- } catch (error) {
-     response.errorAuthResponse(403,error.message,res);
+   console.log(newUser);
+   if(typeof newUser === "string") return contentNegotiation.sendAuthResponse(403,newUser,req,res,null);
+   else return contentNegotiation.sendAuthResponse(200,newUser,req,res,null);
+ } 
+ catch (error) {
+   contentNegotiation.sendAuthResponse(403,error.message,req,res,null);
  }
 };
+
 exports.signin = async (req, res) => {
   try {
     const user = await authService.signinUser(req);
-    if (typeof user === "string") return response.errorAuthResponse(401,user,res);
-
+    if (typeof user === "string") return contentNegotiation.sendAuthResponse(401,user,req,res,null);
     const {cookieOptions,token} = sendJWTToken.sendToken(user.username); 
-    
     res.cookie("jwt",cookieOptions,token);
-     
-    req.negotiate({
-     "application/json": function () {  response.JSONAuthReponse(200,user,token,"Signed in Successfully!",res)},
-     "application/xml" :  function () { response.XMLAuthResponse(200,user,token,"Signed in Successfully!",res)},
-     "application/default": function() { response.defaultAuthResponse(200,user,token,"Signed in Successfully!",res)}
-  });
+    contentNegotiation.sendAuthResponse(200,"Signed in Successfully",req,res,token);
   } catch (error) {
-      response.errorAuthResponse(401,error.message,res);
+    contentNegotiation.sendAuthResponse(401,error.message,req,res,null);
   }
  };
  exports.signout = async (req, res) => {
   try {
-    const user = "user Logged Out" ;
     const token = req.header.authorization;
-    req.negotiate({
-     "application/json": function () {  response.JSONAuthReponse(200,null,token,"Signed Out Successfully!",res)},
-     "application/xml" :  function () { response.XMLAuthResponse(200,null,token,"Signed Out Successfully!",res)},
-     "application/default": function() { response.defaultAuthResponse(200,null,token,"Signed Out Successfully!",res)}
-  });
+    contentNegotiation.sendAuthResponse(200,"Signed Out Successfully!",req,res,token);
   } catch (error) {
-      response.errorAuthResponse(401,error.message,res);
+    contentNegotiation.sendAuthResponse(404,error.message,req,res,token);
   }
  };
  
