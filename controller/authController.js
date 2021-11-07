@@ -8,16 +8,16 @@ dotenv.config({path : './config.env'})
 const mongoAuthDao = new MongoAuthDao();
 const authService = new AuthService(mongoAuthDao);
 
+exports.authService = authService ;
+
 exports.signup = async (req, res) => {
  try {
-   console.log("ssss")
    const newUser = await authService.signupUser(req);
-   console.log(newUser);
    if(typeof newUser === "string") return contentNegotiation.sendAuthResponse(403,newUser,req,res,null);
    else return contentNegotiation.sendAuthResponse(200,newUser,req,res,null);
  } 
  catch (error) {
-   contentNegotiation.sendAuthResponse(403,error.message,req,res,null);
+   return contentNegotiation.sendAuthResponse(403,error.message,req,res,null);
  }
 };
 
@@ -27,17 +27,12 @@ exports.signin = async (req, res) => {
     if (typeof user === "string") return contentNegotiation.sendAuthResponse(401,user,req,res,null);
     const {cookieOptions,token} = sendJWTToken.sendToken(user.username); 
     res.cookie("jwt",cookieOptions,token);
-    contentNegotiation.sendAuthResponse(200,"Signed in Successfully",req,res,token);
+    return contentNegotiation.sendAuthResponse(200,"Signed in Successfully",req,res,token);
   } catch (error) {
-    contentNegotiation.sendAuthResponse(401,error.message,req,res,null);
+    return contentNegotiation.sendAuthResponse(401,error.message,req,res,null);
   }
  };
  exports.signout = async (req, res) => {
-  try {
-    const token = req.header.authorization;
-    contentNegotiation.sendAuthResponse(200,"Signed Out Successfully!",req,res,token);
-  } catch (error) {
-    contentNegotiation.sendAuthResponse(404,error.message,req,res,token);
-  }
+    return contentNegotiation.sendAuthResponse(200,"Signed Out Successfully!",req,res,null);
  };
  

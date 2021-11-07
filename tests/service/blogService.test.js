@@ -1,15 +1,19 @@
 const {MongoBlogDao} = require("../../dao/blog/mongoBlogDao");
 const {BlogService} = require("../../service/blogService");
+const { mockRequest, mockResponse } = require("mock-req-res");
 const sinon = require('sinon');
 const sinonTest = require("sinon-test");
 const sinontest = sinonTest(sinon);
 const mongoBlogDao = new MongoBlogDao();
 const blogService = new BlogService(mongoBlogDao);
 
-const req = {
-     paramas : {
-         id : 0
-     }
+
+const options = {
+    body : {
+        username : "someone" ,
+        blogHeadline: "some Headline",
+        blogDescription: "some Blog"
+    }
 }
 const blog = {
     username : "someone" ,
@@ -35,49 +39,56 @@ const updatedBlog = {
 }
 
 
-test("Testing Get Blog Method of Blog Service Class", sinontest(async function() {
-    const getBlogStub = this.stub(mongoBlogDao,"getBlog");
-    getBlogStub.withArgs(req).returns(blog);
+test("Testing getBlog Method of BlogService Class", sinontest(async function() {
+    const req = mockRequest(options);
+    const res = mockResponse();
+    const getBlogStub = this.stub(mongoBlogDao,"getBlog").returns(blog);
 
-    const blogFromDao = await blogService.getBlog(req);
+    const blogFromDao = await blogService.getBlog(req,res);
+
     expect(blogFromDao).toEqual(blog)
     sinon.assert.calledOnce(getBlogStub);
     sinon.assert.calledWithExactly(getBlogStub,req);
 }))
 
-test("Testing Get All Blogs Method of Blog Service Class", sinontest(async function() {
-    const getAllBlogsStub = this.stub(mongoBlogDao,"getAllBlogs");
-    getAllBlogsStub.withArgs(req).returns(blogs);
+test("Testing getAllBlogs Method of BlogService Class", sinontest(async function() {
+    const req = mockRequest(options);
+    const res = mockResponse();
+    const getAllBlogsStub = this.stub(mongoBlogDao,"getAllBlogs").returns(blogs);
 
-    const blogFromDao = await blogService.getAllBlogs(req);
+    const blogFromDao = await blogService.getAllBlogs(req,res);
+
     expect(blogFromDao).toEqual(blogs)
     sinon.assert.calledOnce(getAllBlogsStub);
     sinon.assert.calledWithExactly(getAllBlogsStub,req);
 }))
 
-test("Testing Create Blog Method of Blog Service Class", sinontest(async function() {
-    const createBlogStub = this.stub(mongoBlogDao,"createBlog");
-    createBlogStub.returns(createdBlog);
+test("Testing createBlog Method of BlogService Class", sinontest(async function() {
+    const req = mockRequest(options);
+    const res = mockResponse();
+    const createBlogStub = this.stub(mongoBlogDao,"createBlog").returns(createdBlog);
 
-    const blogFromDao = await blogService.createBlog(req);
+    const blogFromDao = await blogService.createBlog(req,res);
     expect(blogFromDao).toEqual(blog)
     sinon.assert.calledOnce(createBlogStub);
     sinon.assert.calledWithExactly(createBlogStub,req);
 }))
-test("Testing delete Blog Method of Blog Service Class", sinontest(async function() {
-    const deleteBlogStub = this.stub(mongoBlogDao,"deleteBlog");
-    deleteBlogStub.withArgs(req).returns({});
+test("Testing deleteBlog Method of BlogService Class", sinontest(async function() {
+    const req = mockRequest(options);
+    const res = mockResponse();
+    const deleteBlogStub = this.stub(mongoBlogDao,"deleteBlog").returns({});
 
-    const blogFromDao = await blogService.deleteBlog(req);
+    const blogFromDao = await blogService.deleteBlog(req,res);
     expect(blogFromDao).toEqual({})
     sinon.assert.calledOnce(deleteBlogStub);
     sinon.assert.calledWithExactly(deleteBlogStub,req);
 }))
-test("Testing delete Blog Method of Blog Service Class", sinontest(async function() {
-    const updateBlogStub = this.stub(mongoBlogDao,"updateBlog");
-    updateBlogStub.withArgs(req).returns(updatedBlog);
+test("Testing updateBlog Method of BlogService Class", sinontest(async function() {
+    const req = mockRequest(options);
+    const res = mockResponse();
+    const updateBlogStub = this.stub(mongoBlogDao,"updateBlog").returns(updatedBlog);
 
-    const blogFromDao = await blogService.updateBlog(req);
+    const blogFromDao = await blogService.updateBlog(req,res);
     expect(blogFromDao).toEqual(updatedBlog)
     sinon.assert.calledOnce(updateBlogStub);
     sinon.assert.calledWithExactly(updateBlogStub,req);
