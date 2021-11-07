@@ -25,7 +25,6 @@ class MongoBlogDao extends BlogDao {
         } catch {
             return "blog doesnot exist";
         }
-        return blog ;
         return new BlogDto(blog) ;
     }
     async createBlog(req) {
