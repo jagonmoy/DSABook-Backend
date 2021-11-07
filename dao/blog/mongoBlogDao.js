@@ -2,14 +2,15 @@ const  MongoBlog = require("../../models/blogModel");
 const {BlogDao} = require ("./blogDao");
 const {mongoAPIFeatures} = require("../../utils/apiFeatures/mongoBlogFeatures");
 const {BlogDto} = require("../../dto/blogDto");
-const mongoFeatures = new mongoAPIFeatures()
+
+
 
 class MongoBlogDao extends BlogDao {
     async getAllBlogs(req) {
-        let query = mongoFeatures.filter(req); 
-        query = mongoFeatures.sort(query,req);
-        query = mongoFeatures.limitingFields(query,req);
-        query = mongoFeatures.paginate(query,req);
+        let query = mongoAPIFeatures.prototype.filter(req); 
+        query = mongoAPIFeatures.prototype.sort(query,req);
+        query = mongoAPIFeatures.prototype.limitingFields(query,req);
+        query = mongoAPIFeatures.prototype.paginate(query,req);
         const mongoBlogs = await query;
         if (!mongoBlogs.length) return "blogs doesnot exist";
         let allBlogs  = [] ;
@@ -38,7 +39,7 @@ class MongoBlogDao extends BlogDao {
         return new BlogDto(blog);
     }
     async deleteBlog(req){
-        await MongoBlog.findByIdAndDelete(req.params.id);
+        return await MongoBlog.findByIdAndDelete(req.params.id);
     }
 }
 
