@@ -1,7 +1,7 @@
 const  MongoBlog = require("../../models/blogModel");
 const {MongoBlogDao} = require("../../dao/blog/mongoBlogDao");
 const {mongoAPIFeatures} = require("../../utils/apiFeatures/mongoBlogFeatures");
-const {mockRequest, mockResponse } = require("mock-req-res");
+const {mockRequest} = require("mock-req-res");
 const sinon = require('sinon');
 const sinonTest = require("sinon-test");
 const sinontest = sinonTest(sinon);
@@ -42,13 +42,12 @@ const updatedBlog = {
 }
 test("Testing getAllBlogs Method of mongoblogDao Class", sinontest(async function() {
     const req = mockRequest(options);
-    const res = mockResponse();
     const getFilterQueryStub = this.stub(mongoAPIFeatures.prototype,"filter").returns(query);
     const getSortQueryStub = this.stub(mongoAPIFeatures.prototype,"sort").returns(query);
     const getLimitingFieldsQueryStub = this.stub( mongoAPIFeatures.prototype,"limitingFields").returns(query);
     const getPaginateQueryStub = this.stub( mongoAPIFeatures.prototype,"paginate").returns(blogs);
 
-    const blogFromDao = await mongoBlogDao.getAllBlogs(req,res);
+    const blogFromDao = await mongoBlogDao.getAllBlogs(req);
 
     expect(blogFromDao).toEqual(blogs);
     sinon.assert.calledOnce(getFilterQueryStub);
@@ -64,10 +63,9 @@ test("Testing getAllBlogs Method of mongoblogDao Class", sinontest(async functio
 
 test("Testing getBlog Method of mongoblogDao Class when there is no error", sinontest(async function() {
     const req = mockRequest(options);
-    const res = mockResponse();
     const getBlogStub = this.stub(MongoBlog,"findById").returns(blog);
 
-    const blogFromDao = await mongoBlogDao.getBlog(req,res);
+    const blogFromDao = await mongoBlogDao.getBlog(req);
 
     expect(blogFromDao).toEqual(blog)
     sinon.assert.calledOnce(getBlogStub);
@@ -75,10 +73,9 @@ test("Testing getBlog Method of mongoblogDao Class when there is no error", sino
 }))
 test("Testing getBlog Method of mongoblogDao Class when there is error", sinontest(async function() {
     const req = mockRequest(options);
-    const res = mockResponse();
     const getBlogStub = this.stub(MongoBlog,"findById").returns(Promise.reject());
 
-    const blogFromDao = await mongoBlogDao.getBlog(req,res);
+    const blogFromDao = await mongoBlogDao.getBlog(req);
 
     expect(blogFromDao).toEqual("blog doesnot exist")
     sinon.assert.calledOnce(getBlogStub);
@@ -87,10 +84,9 @@ test("Testing getBlog Method of mongoblogDao Class when there is error", sinonte
 
 test("Testing createBlog Method of mongoblogDao Class", sinontest(async function() {
     const req = mockRequest(options);
-    const res = mockResponse();
     const createBlogStub = this.stub(MongoBlog,"create").returns(createdBlog);
 
-    const blogFromDao = await mongoBlogDao.createBlog(req,res);
+    const blogFromDao = await mongoBlogDao.createBlog(req);
 
     expect(blogFromDao).toEqual(createdBlog);
     sinon.assert.calledOnce(createBlogStub);
@@ -98,10 +94,9 @@ test("Testing createBlog Method of mongoblogDao Class", sinontest(async function
 }))
 test("Testing updateBlog Method of mongoblogDao Class", sinontest(async function() {
     const req = mockRequest(options);
-    const res = mockResponse();
     const updateBlogStub = this.stub(MongoBlog,"findByIdAndUpdate").returns(updatedBlog);
 
-    const blogFromDao = await mongoBlogDao.updateBlog(req,res);
+    const blogFromDao = await mongoBlogDao.updateBlog(req);
 
     expect(blogFromDao).toEqual(updatedBlog);
     sinon.assert.calledOnce(updateBlogStub);
@@ -109,10 +104,9 @@ test("Testing updateBlog Method of mongoblogDao Class", sinontest(async function
 }))
 test("Testing deleteBlog Method of mongoblogDao Class", sinontest(async function() {
     const req = mockRequest(options);
-    const res = mockResponse();
     const deleteBlogStub = this.stub(MongoBlog,"findByIdAndDelete").returns({});
 
-    const blogFromDao = await mongoBlogDao.deleteBlog(req,res);
+    const blogFromDao = await mongoBlogDao.deleteBlog(req);
 
     expect(blogFromDao).toEqual({});
     sinon.assert.calledOnce(deleteBlogStub);

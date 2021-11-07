@@ -1,6 +1,6 @@
 const  MongoUser = require("../../models/userModel");
 const {MongoAuthDao} = require("../../dao/auth/mongoAuthDao");
-const {mockRequest, mockResponse } = require("mock-req-res");
+const {mockRequest} = require("mock-req-res");
 const sinon = require('sinon');
 const sinonTest = require("sinon-test");
 const sinontest = sinonTest(sinon);
@@ -25,12 +25,11 @@ const user = {
 
 test("Testing signup Method of mongoAuthDao Class", sinontest(async function() {
     const req = mockRequest(options);
-    const res = mockResponse();
     const {email,username} = req.body;
     const findOneStub = this.stub(MongoUser,"findOne").returns(null);
     const createStub = this.stub(MongoUser,"create").returns(user);
 
-    const userFromDao = await mongoAuthDao.signupUser(req,res);
+    const userFromDao = await mongoAuthDao.signupUser(req);
 
     expect(userFromDao).toEqual(user);
     sinon.assert.calledTwice(findOneStub);
@@ -42,7 +41,6 @@ test("Testing signup Method of mongoAuthDao Class", sinontest(async function() {
 /*
 test("Testing signin Method of mongoAuthDao Class ", sinontest(async function() {
     const req = mockRequest(options);
-    const res = mockResponse();
     const {email,username} = req.body;
     const findOneStub = this.stub(MongoUser,"findOne").returns({
         select: sinon.stub().returns(MongoUser.prototype.user)
