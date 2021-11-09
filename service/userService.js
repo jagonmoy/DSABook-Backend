@@ -2,14 +2,22 @@ class UserService {
     constructor(userDao) {
       this.userDao = userDao;
     }
-    getAllUsers(req) {return this.userDao.getAllUsers(req);}
-    getUser(req){return this.userDao.getUser(req);}
-    createUser(req){return this.userDao.createUser(req);}
-    updateUser(req){
-      return this.userDao.updateUser(req);
+    async createUser(req){
+        return this.userDao.createUser(req);
     }
-    deleteUser(req){return this.userDao.deleteUser(req);}  
+    async getAllUsers(req) {
+        return this.userDao.getAllUsers(req);
+    }
+    async signinUser(req){
+        return this.userDao.signinUser(req);
+    }
+    async getUser(id) {
+        return this.userDao.getUser(id)
+    }
+    async changePasswordAfter(id,time) {
+        return await this.userDao.changePasswordAfter(id,time);
+    }
+  
   }
   
   module.exports = {UserService}
-  

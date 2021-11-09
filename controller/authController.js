@@ -1,83 +1,68 @@
-const response = require("../utils/response")
-const {BlogService} = require("../service/blogService")
-const {MongoDao} = require("../dao/blog/mongoBlogDao")
-const {MysqlDao} = require("../dao/blog/mysqlBlogDao")
+const {promisify} = require('util')
+const response = require("../utils/authResponse")
+const {UserService} = require("../service/userService")
+const {MongoUserDao} = require("../dao/user/mongoUserDao")
+const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken')
 const express = require("express"),
  negotiate = require("express-negotiate");
+ dotenv.config({path : './config.env'})
+const currentDatabase = new MongoUserDao();
+ // const currentDatabase = new MysqlDao();
+const userService = new UserService(currentDatabase);
 
-
-const currentDatabase = new MongoDao();
-// const currentDatabase = new MysqlDao();
-const blogService = new BlogService(currentDatabase);
-
-
-exports.aliasBlogs = async (req,res,next) => {
-  req.query.limit = '3';
-  req.query.sort = '-createdAt,userName';
-  req.query.fields = 'userName,blogHeadline,blogDescription,createdAt,_id'
-  next();
+const signinToken = (id) => {
+  return jwt.sign({id : id},process.env.JWT_SECRET,{
+    expiresIn: process.env.JWT_EXPIRE
+  })
 }
 
-
-
-exports.getAllBlogs = async (req, res) => {
+exports.signup = async (req, res) => {
  try {
-   const blogs = await blogService.getAllBlogs(req);
-   if (!blogs) throw new Error;
+   const newUser = await userService.createUser(req);
+   if(!newUser) throw new Error('Email Already Exists');
+   const token = signinToken(newUser.id);
    req.negotiate({
-       "application/json": function () {  blogResponse.JSONReponse(200,blogs,res)},
-       "application/xml" :  function () { blogResponse.XMLResponse(200,blogs,res)},
-       "application/default": function() { blogResponse.defaultResponse(200,blogs,res)}
-   });
- } catch (err) {
-     blogResponse.errorResponse(404,res);
+    "application/json": function () {  response.JSONAuthReponse(200,newUser,token,"Account is Created Successfully!",res)},
+    "application/xml" :  function () { response.XMLAuthResponse(200,newUser,token,"Account is Created Successfully!",res)},
+    "application/default": function() { response.defaultAuthResponse(200,newUser,token,"Account is Created Successfully!",res)}
+ });
+ } catch (error) {
+     response.errorAuthResponse(403,error.message,res);
  }
 };
-exports.getBlog = async (req, res) => {
- try {
-   const blog = await blogService.getBlog(req);
-   req.negotiate({
-    "application/json": function ()  { blogResponse.JSONReponse(200,blog,res)},
-    "application/xml" :  function () { blogResponse.XMLResponse(200,blog,res)},
-    "application/default": function(){ blogResponse.defaultResponse(200,blog,res)}
- });
-} catch (err) {
-  blogResponse.errorResponse(404,res);
-}
-};
-exports.createBlog = async (req, res) => {
- try {
-   const newBlog = await blogService.createBlog(req);
-   req.negotiate({
-    "application/json": function () {  blogResponse.JSONReponse(201,newBlog,res)},
-    "application/xml" :  function () { blogResponse.XMLResponse(201,newBlog,res)},
-    "application/default": function() { blogResponse.defaultResponse(200,newBlog,res)}
- });
-} catch (err) {
-  blogResponse.errorResponse(404,res);
-}
-};
-exports.updateBlog = async (req, res) => {
- try {
-  const blog = await blogService.updateBlog(req);
-   req.negotiate({
-    "application/json": function () {  blogResponse.JSONReponse(200,blog,res)},
-    "application/xml" :  function () { blogResponse.XMLResponse(200,blog,res)},
-    "application/default": function() { blogResponse.defaultResponse(200,blog,res)}
- });
-} catch (err) {
-  blogResponse.errorResponse(404,res);
-}
-};
-exports.deleteBlog = async (req, res) => {
- try {
-   await blogService.deleteBlog(req);
-   req.negotiate({
-    "application/json": function () {  blogResponse.JSONReponse(204,null,res)},
-    "application/xml" :  function () { blogResponse.XMLResponse(204,null,res)},
-    "application/default": function() { blogResponse.defaultResponse(200,blogs,res)}
- });
-} catch (err) {
-  blogResponse.errorResponse(404,res);
-}
-};
+exports.signin = async (req, res) => {
+  try {
+    const user = await userService.signinUser(req);
+    if (!user) throw new Error('Incorrect Email or Password');
+    const token = signinToken(user.id);
+    req.negotiate({
+     "application/json": function () {  response.JSONAuthReponse(200,user,token,"Signed in Successfully!",res)},
+     "application/xml" :  function () { response.XMLAuthResponse(200,user,token,"Signed in Successfully!",res)},
+     "application/default": function() { response.defaultAuthResponse(200,user,token,"Signed in Successfully!",res)}
+  });
+  } catch (error) {
+      response.errorAuthResponse(401,error.message,res);
+  }
+ };
+ exports.protect = async(req, res,next) => {
+  try {
+    let token ;
+    if (req.headers.authorization) token = req.headers.authorization;
+    if (token == undefined) return response.errorAuthResponse(401,"You are not logged in");
+    let decoded;
+    try {
+      decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET);    
+    }
+    catch(error) {
+      return response.errorAuthResponse(401,"Invalid Token,Token Expiry is Over or It Does not Exist",res);
+    }
+    const legitUser = await userService.getUser(decoded.id);
+    if(!legitUser) return response.errorAuthResponse(401,"Token Belongs To the User Does not Exits",res);
+    if(await userService.changePasswordAfter(decoded.id,decoded.iat)) response.errorAuthResponse(401,"Passowrd was Changed , Login Again",res);; 
+    next();
+  } catch (error) {
+      response.errorAuthResponse(404,error.message,res);
+  }
+ };
+
