@@ -1,10 +1,11 @@
-const { body, validationResult,check } = require('express-validator')
+const {validationResult,check} = require('express-validator')
  
 exports.signupUserValidation = () => {
  return [
-   check('userName','name must be between 5 to 30 letters').isLength({ min: 5 , max: 30}),
+   check('name','name must be between 5 to 30 letters').isLength({ min: 5 , max: 30}),
+   check('username','username must be between 5 to 10 letters').isLength({ min: 5 , max: 10}),
    check('email','Email should be valid').isEmail(),
-   check("password","password at least 8 character and contain At least one uppercase.At least one lower case.At least one special character. ").isLength({ min: 8 }).matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d@$.!%*#?&]/),
+   check("password","password must be at least 8 characters").isLength({ min: 8 }),
    check('confirmPassword').custom((value, { req }) => {
       if (value !== req.body.password) throw new Error('Password Does not match');
       return true

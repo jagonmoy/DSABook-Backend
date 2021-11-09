@@ -1,6 +1,6 @@
 const  MongoBlog = require("../../models/blogModel");
 const {BlogDao} = require ("./blogDao");
-const {mongoAPIFeatures} = require("../../apiFeatures/mongoFeatures");
+const {mongoAPIFeatures} = require("../../utils/apiFeatures/mongoBlogFeatures");
 const {BlogDto} = require("../../dto/blogDto");
 const mongoFeatures = new mongoAPIFeatures()
 
@@ -11,7 +11,7 @@ class MongoBlogDao extends BlogDao {
         query = mongoFeatures.limitingFields(query,req);
         query = mongoFeatures.paginate(query,req);
         const mongoBlogs = await query;
-        if (!mongoBlogs.length) return null ;
+        if (!mongoBlogs.length) return "blogs doesnot exist";
         let allBlogs  = [] ;
         for ( let i = 0 ; i < mongoBlogs.length; i++) {
             allBlogs[i] = new BlogDto(mongoBlogs[i]);
@@ -20,6 +20,7 @@ class MongoBlogDao extends BlogDao {
     }
     async getBlog(req) {
         const blog = await MongoBlog.findById(req.params.id);
+        if(!blog) return "blog doesnot exist";
         return new BlogDto(blog) ;
     }
     async createBlog(req) {

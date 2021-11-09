@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 
 
 const blogSchema = new mongoose.Schema({
-  userName: {
+  username: {
     type: String,
-    required:true
+    required:true,
   },
   blogHeadline: {
     type: String,
@@ -13,7 +13,7 @@ const blogSchema = new mongoose.Schema({
   blogDescription: {
     type: String,
     required:true
-  }
+  },
 },{
   timestamps : true
 });
