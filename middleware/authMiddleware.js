@@ -1,5 +1,5 @@
 const {promisify} = require('util')
-const response = require("../utils/response/authResponse")
+const contentNegotiation = require("../utils/contentNegotiation")
 const jwt = require('jsonwebtoken')
 
 exports.isSignedIn = async(req, res,next) => {
@@ -7,14 +7,14 @@ exports.isSignedIn = async(req, res,next) => {
       try { 
           const token = req.headers.authorization;
           const decoder = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
-          if (decoder.username !== "undefined") return response.errorAuthResponse(404,"Sign Out First And Then Try Again!",res);
+          if (decoder.username !== "undefined") return contentNegotiation.sendAuthResponse(404,"Sign Out First And Then Try Again!",req,res,null);
           next()
       } catch { 
          next();
       }
     } 
     catch (error) {
-      response.errorAuthResponse(404,error.message,res);
+      ontentNegotiation.sendAuthResponse(404,error.message,req,res,null);
     }
 };
 exports.notSignedIn = async(req, res,next) => {
@@ -23,13 +23,13 @@ exports.notSignedIn = async(req, res,next) => {
         try { 
             const token = req.headers.authorization;
             const decoder = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
-            if (decoder.username === "undefined") return response.errorAuthResponse(404,"Sign in First And Then Try Again!",res);
+            if (decoder.username === "undefined") return contentNegotiation.sendAuthResponse(404,"Sign in First And Then Try Again!",req,res,null);
             next()
         } catch {
             return response.errorAuthResponse(404,"Sign in First And Then Try Again!",res);
         }
     } 
     catch (error) {
-      response.errorAuthResponse(404,error.message,res);
+      contentNegotiation.sendAuthResponse(404,error.message,req,res,null);
     }
 };

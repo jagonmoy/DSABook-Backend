@@ -1,34 +1,26 @@
-const response = require("../utils/response/userResponse")
+const contentNegotiation = require("../utils/contentNegotiation")
 const {UserService} = require("../service/userService")
 const {MongoUserDao} = require("../dao/user/mongoUserDao")
-const express = require("express"),
- negotiate = require("express-negotiate");
 
 const mongoUserDao = new MongoUserDao();
 const userService = new UserService(mongoUserDao);
 
+exports.userService = userService ;
+
 exports.getAllUsers = async (req, res) => {
  try {
    const users = await userService.getAllUsers(req);
-   req.negotiate({
-       "application/json": function () { response.JSONUserResponse(200,users,res)},
-       "application/xml" :  function () { response.XMLUserResponse(200,users,res)},
-       "application/default": function() { response.defaultUserResponse(200,users,res)}
-   });
- } catch (err) {
-     response.errorUserResponse(404,res);
+   return contentNegotiation.sendUserResponse(200,users,req,res);
+ } catch (error) {
+  return contentNegotiation.sendUserResponse(404,error.message,req,res);
  }
 };
 exports.getUser = async (req, res) => {
   try {
     const user = await userService.getUser(req.params.username);
-    if(typeof user === "string") return response.errorUserResponse(404,user,res)
-    req.negotiate({
-     "application/json": function ()  { response.JSONUserResponse(200,user,res)},
-     "application/xml" :  function () { response.XNLUserResponse(200,user,res)},
-     "application/default": function(){ response.defaultUserReponse(200,user,res)}
-  });
+    if(typeof user === "string") return contentNegotiation.sendUserResponse(404,user,req,res);
+    return contentNegotiation.sendUserResponse(200,user,req,res);
  } catch (error) {
-   response.errorUserResponse(404,error.message,res);
+    return contentNegotiation.sendUserResponse(404,error.message,req,res);
  }
  };
