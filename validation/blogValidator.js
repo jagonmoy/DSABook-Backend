@@ -2,8 +2,8 @@ const {validationResult,check } = require('express-validator')
  
 exports.createBlogValidation = () => {
  return [
-  check('blogHeadline','Headline must be between 5 to 30 letter').isLength({ min: 5 , max: 30}),
-  check('blogDescription','description must be between 5 to 2000 letter').isLength({ min: 5 , max: 2000})
+  check('blogHeadline','Headline must be between 5 to 30 letter').trim().isLength({ min: 5 , max: 30}),
+  check('blogDescription','description must be between 5 to 2000 letter').trim().isLength({ min: 5 , max: 2000})
  ]
 }
  

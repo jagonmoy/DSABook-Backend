@@ -11,7 +11,10 @@ DatabaseConnection();
 
 const port = 3010 || process.env.PORT ;
 
-app.listen(port, () => {
+const host  = process.env.IP || 'localhost' ;
+
+app.listen(port, host , () => {
+    console.log(host);
     console.log(`${port} is running`);
 });
 

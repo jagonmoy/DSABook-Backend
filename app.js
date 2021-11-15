@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const blogRouter = require('./routes/blogRoutes');
 const userRouter = require('./routes/userRoutes');
 const authRouter = require('./routes/authRoutes');
@@ -8,13 +9,13 @@ const app = express();
 
 
 
-app.use(morgan('dev'));
+// 
 app.use(express.json());
+app.use(cors());
+app.use(morgan('dev'));
 
 app.use('/api/blogs',blogRouter);
 app.use('/api/users',userRouter);
 app.use('/api/auth',authRouter);
-
-
 
 module.exports = app ;
