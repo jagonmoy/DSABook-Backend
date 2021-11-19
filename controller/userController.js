@@ -10,17 +10,17 @@ exports.userService = userService ;
 exports.getAllUsers = async (req, res) => {
  try {
    const users = await userService.getAllUsers(req);
-   return contentNegotiation.sendUserResponse(200,users,req,res);
+   return contentNegotiation.sendResponse(200,users,req,res);
  } catch (error) {
-  return contentNegotiation.sendUserResponse(404,error.message,req,res);
+  return contentNegotiation.sendResponse(404,error.message,req,res);
  }
 };
 exports.getUser = async (req, res) => {
   try {
     const user = await userService.getUser(req.params.username);
-    if(typeof user === "string") return contentNegotiation.sendUserResponse(404,user,req,res);
-    return contentNegotiation.sendUserResponse(200,user,req,res);
+    if(typeof user === "string") return contentNegotiation.sendResponse(404,user,req,res);
+    return contentNegotiation.sendResponse(200,user,req,res);
  } catch (error) {
-    return contentNegotiation.sendUserResponse(404,error.message,req,res);
+    return contentNegotiation.sendResponse(404,error.message,req,res);
  }
  };

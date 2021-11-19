@@ -31,7 +31,7 @@ const options = {
      const req = mockRequest(options);
      const res = mockResponse(); 
      const getUserFromServiceStub = this.stub(userService,"getUser").returns(user);
-     const getUserFromContentNegotiationStub = this.stub(contentNegotiation,"sendUserResponse").returns(user); 
+     const getUserFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns(user); 
      const result = await userController.getUser(req,res);  
     
      expect(result).toEqual(user)
@@ -48,7 +48,7 @@ const options = {
      const req = mockRequest(options);
      const res = mockResponse(); 
      const getUserFromServiceStub = this.stub(userService,"getUser").returns(Promise.reject(new Error("Random")));
-     const getUserFromContentNegotiationStub = this.stub(contentNegotiation,"sendUserResponse").returns("Error") 
+     const getUserFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns("Error") 
      const result = await userController.getUser(req,res); 
 
      expect(result).toEqual("Error") 
@@ -66,7 +66,7 @@ const options = {
      const res = mockResponse();
      
      const getAllUsersFromServiceStub = this.stub(userService,"getAllUsers").returns(user);
-     const getAllUsersFromContentNegotiationStub = this.stub(contentNegotiation,"sendUserResponse").returns(user) 
+     const getAllUsersFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns(user) 
      const result = await userController.getAllUsers(req,res);
 
      expect(result).toEqual(user)
@@ -83,7 +83,7 @@ test(
     const req = mockRequest(options);
     const res = mockResponse();
     const getAllUsersFromServiceStub = this.stub(userService,"getAllUsers").returns(Promise.reject(new Error("Random")));
-    const getAllUsersFromContentNegotiationStub = this.stub(contentNegotiation,"sendUserResponse").returns("Error")
+    const getAllUsersFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns("Error")
 
     const result = await userController.getAllUsers(req,res);
     

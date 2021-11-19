@@ -32,14 +32,14 @@ const cookieOptions = "cookieOptions";
      const req = mockRequest(options); 
      const res = mockResponse();
      const signupFromServiceStub = this.stub(authService,"signupUser").returns(user);
-     const signupFromContentNegotiationStub = this.stub(contentNegotiation,"sendAuthResponse").returns(user); 
+     const signupFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns(user); 
      const result = await authController.signup(req,res);  
     
      expect(result).toEqual(user)
      sinon.assert.calledOnce(signupFromServiceStub);
      sinon.assert.calledOnce(signupFromContentNegotiationStub);
      sinon.assert.calledWithExactly(signupFromServiceStub,req);
-     sinon.assert.calledWithExactly(signupFromContentNegotiationStub,200,user,req,res,null); 
+     sinon.assert.calledWithExactly(signupFromContentNegotiationStub,200,user,req,res); 
    })
  );
  test(
@@ -48,14 +48,14 @@ const cookieOptions = "cookieOptions";
       const req = mockRequest(options); 
       const res = mockResponse();
       const signupFromServiceStub = this.stub(authService,"signupUser").returns(Promise.reject(new Error("Random")));
-      const signupFromContentNegotiationStub = this.stub(contentNegotiation,"sendAuthResponse").returns("Error"); 
+      const signupFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns("Error"); 
       const result = await authController.signup(req,res);  
      
       expect(result).toEqual("Error")
       sinon.assert.calledOnce(signupFromServiceStub);
       sinon.assert.calledOnce(signupFromContentNegotiationStub);
       sinon.assert.calledWithExactly(signupFromServiceStub,req);
-      sinon.assert.calledWithExactly(signupFromContentNegotiationStub,403,"Random",req,res,null); 
+      sinon.assert.calledWithExactly(signupFromContentNegotiationStub,403,"Random",req,res); 
     })
   );
   test(
@@ -65,7 +65,7 @@ const cookieOptions = "cookieOptions";
       const res = mockResponse();
       const signinFromServiceStub = this.stub(authService,"signinUser").returns(user);
       const sendJWTTokenStub = this.stub(sendJWTToken,"sendToken").returns({token,cookieOptions})
-      const signinFromContentNegotiationStub = this.stub(contentNegotiation,"sendAuthResponse").returns(user); 
+      const signinFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns(user); 
       const result = await authController.signin(req,res);  
      
       expect(result).toEqual(user)
@@ -74,7 +74,7 @@ const cookieOptions = "cookieOptions";
       sinon.assert.calledOnce(signinFromContentNegotiationStub);
       sinon.assert.calledWithExactly(signinFromServiceStub,req);
       sinon.assert.calledWithExactly(sendJWTTokenStub,user.username);
-      sinon.assert.calledWithExactly(signinFromContentNegotiationStub,200,"Signed in Successfully",req,res,token); 
+      sinon.assert.calledWithExactly(signinFromContentNegotiationStub,200,"Signed in Successfully",req,res); 
     })
   );
   test(
@@ -84,7 +84,7 @@ const cookieOptions = "cookieOptions";
       const res = mockResponse();
       const signinFromServiceStub = this.stub(authService,"signinUser").returns(Promise.reject(new Error("Random")));
       const sendJWTTokenStub = this.stub(sendJWTToken,"sendToken").returns({token,cookieOptions})
-      const signinFromContentNegotiationStub = this.stub(contentNegotiation,"sendAuthResponse").returns("Error"); 
+      const signinFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns("Error"); 
       const result = await authController.signin(req,res);  
      
       expect(result).toEqual("Error")
@@ -92,7 +92,7 @@ const cookieOptions = "cookieOptions";
       expect(sendJWTTokenStub.calledOnce).toBeFalsy();
       sinon.assert.calledOnce(signinFromContentNegotiationStub);
       sinon.assert.calledWithExactly(signinFromServiceStub,req);
-      sinon.assert.calledWithExactly(signinFromContentNegotiationStub,401,"Random",req,res,null); 
+      sinon.assert.calledWithExactly(signinFromContentNegotiationStub,401,"Random",req,res); 
     })
   );
   test(
@@ -100,12 +100,12 @@ const cookieOptions = "cookieOptions";
     sinontest(async function () {
       const req = mockRequest(options); 
       const res = mockResponse();
-      const signoutFromContentNegotiationStub = this.stub(contentNegotiation,"sendAuthResponse").returns(user); 
+      const signoutFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns(user); 
       const result = await authController.signout(req,res);  
      
       expect(result).toEqual(user)
       sinon.assert.calledOnce(signoutFromContentNegotiationStub);
-      sinon.assert.calledWithExactly(signoutFromContentNegotiationStub,200,"Signed Out Successfully!",req,res,null); 
+      sinon.assert.calledWithExactly(signoutFromContentNegotiationStub,200,"Signed Out Successfully!",req,res); 
     })
   );
  

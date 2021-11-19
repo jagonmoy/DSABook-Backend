@@ -7,11 +7,13 @@ const {BlogDto} = require("../../dto/blogDto");
 
 class MongoBlogDao extends BlogDao {
     async getAllBlogs(req) {
-        let query = mongoAPIFeatures.prototype.filter(req); 
-        query = mongoAPIFeatures.prototype.sort(query,req);
-        query = mongoAPIFeatures.prototype.limitingFields(query,req);
-        query = mongoAPIFeatures.prototype.paginate(query,req);
-        const mongoBlogs = await query;
+        // let query = mongoAPIFeatures.prototype.filter(req); 
+        // query = mongoAPIFeatures.prototype.sort(query,req);
+        // query = mongoAPIFeatures.prototype.limitingFields(query,req);
+        // query = mongoAPIFeatures.prototype.paginate(query,req);
+        console.log("inside getAllBlogs")
+        const mongoBlogs = await MongoBlog.find(req.query).sort('-createdAt');;
+        console.log(mongoBlogs.length);
         if (!mongoBlogs.length) return "blogs doesnot exist";
         let allBlogs  = [] ;
         for ( let i = 0 ; i < mongoBlogs.length; i++) {
@@ -29,6 +31,7 @@ class MongoBlogDao extends BlogDao {
         return new BlogDto(blog) ;
     }
     async createBlog(req) {
+        //console.log("dhukeche");
         const newBlog = await MongoBlog.create(req.body);
         return new BlogDto(newBlog);
     }

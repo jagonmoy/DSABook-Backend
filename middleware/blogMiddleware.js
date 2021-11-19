@@ -9,11 +9,13 @@ const userService = new UserService(mongoUserDao);
 
 exports.protect = async(req, res,next) => {
     try {
-      let token ;
-      if (typeof req.headers.authorization === "undefined") {
-        return contentNegotiation.sendAuthResponse(401,"You are not logged in",req,res,null);
+      console.log("inside middleware")
+      let token = req.cookies.jwt ;
+      console.log(token)
+      if (typeof req.cookies.jwt === "undefined") {
+        return contentNegotiation.sendResponse(401,"You are not logged in",req,res,null);
       }
-      else token = req.headers.authorization;
+      else token = req.cookies.jwt;
 
       let decoded;
       try {
@@ -24,13 +26,13 @@ exports.protect = async(req, res,next) => {
       }
       
       const legitUser = await userService.getUser(decoded.username);
-      if(typeof legitUser.username === "undefined") rcontentNegotiation.sendAuthResponse(401,"Token Belongs To the User Does not Exits",req,res,null);
+      if(typeof legitUser.username === "undefined") rcontentNegotiation.sendResponse(401,"Token Belongs To the User Does not Exits",req,res,null);
   
       req.body.username = decoded.username;
   
       next();
     } 
     catch (error) {
-      contentNegotiation.sendAuthResponse(404,error.message,req,res,null);
+      contentNegotiation.sendResponse(404,error.message,req,res,null);
     }
 };

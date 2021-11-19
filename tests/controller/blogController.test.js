@@ -28,7 +28,7 @@ const options = {
      const req = mockRequest(options); 
      const res = mockResponse();
      const getBlogFromServiceStub = this.stub(blogService,"getBlog").returns(blog);
-     const getBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendBlogResponse").returns(blog); 
+     const getBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns(blog); 
      const result = await blogController.getBlog(req,res);  
 
      expect(result).toEqual(blog)
@@ -44,7 +44,7 @@ const options = {
      const req = mockRequest(options);
      const res = mockResponse(); 
      const getBlogFromServiceStub = this.stub(blogService,"getBlog").returns(Promise.reject(new Error("Random")));
-     const getBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendBlogResponse").returns("Error") 
+     const getBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns("Error") 
      const result = await blogController.getBlog(req,res); 
 
      expect(result).toEqual("Error") 
@@ -62,7 +62,7 @@ const options = {
      const res = mockResponse();
      
      const getAllBlogsFromServiceStub = this.stub(blogService,"getAllBlogs").returns(blog);
-     const getAllBlogsFromContentNegotiationStub = this.stub(contentNegotiation,"sendBlogResponse").returns(blog) 
+     const getAllBlogsFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns(blog) 
      const result = await blogController.getAllBlogs(req,res);
 
      expect(result).toEqual(blog)
@@ -78,7 +78,7 @@ test(
     const req = mockRequest(options);
     const res = mockResponse();
     const getAllBlogsFromServiceStub = this.stub(blogService,"getAllBlogs").returns(Promise.reject(new Error("Random")));
-    const getAllBlogsFromContentNegotiationStub = this.stub(contentNegotiation,"sendBlogResponse").returns("Error")
+    const getAllBlogsFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns("Error")
 
     const result = await blogController.getAllBlogs(req,res);
     
@@ -96,7 +96,7 @@ test(
     const res = mockResponse();
     
     const createBlogFromServiceStub = this.stub(blogService,"createBlog").returns(blog);
-    const createBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendBlogResponse").returns(blog) 
+    const createBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns(blog) 
     const result = await blogController.createBlog(req,res);
 
     expect(result).toEqual(blog)
@@ -112,7 +112,7 @@ test(
    const req = mockRequest(options);
    const res = mockResponse();
    const createBlogFromServiceStub = this.stub(blogService,"createBlog").returns(Promise.reject(new Error("Random")));
-   const createBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendBlogResponse").returns("Error")
+   const createBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns("Error")
 
    const result = await blogController.createBlog(req,res);
    
@@ -131,7 +131,7 @@ test(
     
     const getBlogFromServiceStub = this.stub(blogService,"getBlog").returns(blog);
     const updateBlogFromServiceStub = this.stub(blogService,"updateBlog").returns(blog);
-    const updateBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendBlogResponse").returns(blog) 
+    const updateBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns(blog) 
 
     const result = await blogController.updateBlog(req,res);
 
@@ -154,7 +154,7 @@ test(
    
    const getBlogFromServiceStub = this.stub(blogService,"getBlog").returns(Promise.reject(new Error("Random")));
    const updateBlogFromServiceStub = this.stub(blogService,"updateBlog").returns(blog);
-   const updateBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendBlogResponse").returns("Error")
+   const updateBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns("Error")
 
 
    const result = await blogController.updateBlog(req,res);
@@ -176,7 +176,7 @@ test(
     
     const getBlogFromServiceStub = this.stub(blogService,"getBlog").returns(blog);
     const updateBlogFromServiceStub = this.stub(blogService,"updateBlog").returns(Promise.reject(new Error("Random")));
-    const updateBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendBlogResponse").returns("Error")
+    const updateBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns("Error")
  
  
     const result = await blogController.updateBlog(req,res);
@@ -199,7 +199,7 @@ test(
     
     const getBlogFromServiceStub = this.stub(blogService,"getBlog").returns(blog);
     const deleteBlogFromServiceStub = this.stub(blogService,"deleteBlog").returns(blog);
-    const deleteBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendBlogResponse").returns(blog) 
+    const deleteBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns(blog) 
 
     const result = await blogController.deleteBlog(req,res);
 
@@ -222,7 +222,7 @@ test(
    
    const getBlogFromServiceStub = this.stub(blogService,"getBlog").returns(Promise.reject(new Error("Random")));
    const deleteBlogFromServiceStub = this.stub(blogService,"deleteBlog").returns(blog);
-   const deleteBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendBlogResponse").returns("Error")
+   const deleteBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns("Error")
 
 
    const result = await blogController.deleteBlog(req,res);
@@ -244,7 +244,7 @@ test(
    
    const getBlogFromServiceStub = this.stub(blogService,"getBlog").returns(blog);
    const deleteBlogFromServiceStub = this.stub(blogService,"deleteBlog").returns(Promise.reject(new Error("Random")));
-   const deleteBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendBlogResponse").returns("Error")
+   const deleteBlogFromContentNegotiationStub = this.stub(contentNegotiation,"sendResponse").returns("Error")
 
 
    const result = await blogController.deleteBlog(req,res);

@@ -2,7 +2,6 @@ const mongoUser = require("../../models/userModel");
 const {AuthDao} = require ("../auth/authDao");
 const {UserDto} = require("../../dto/userDto");
 
-
 class MongoAuthDao extends AuthDao {
     async signupUser(req) {
         const {email,username} = req.body;
@@ -15,10 +14,10 @@ class MongoAuthDao extends AuthDao {
     }
     async signinUser(req) {
         const {email,password} = req.body;
-        const user = await mongoUser.findOne({email}).select('password');
+        let user = await mongoUser.findOne({email}).select('password');
         if (!user) return "Incorrect Email" ;
         if (!await user.matchPasswords(password,user.password)) return "Password is not correct";
-        console.log(user);
+        user = await mongoUser.findById(user._id);
         return new UserDto(user);
     }
 }
