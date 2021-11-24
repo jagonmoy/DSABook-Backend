@@ -11,11 +11,11 @@ exports.blogService = blogService ;
 exports.getAllBlogs = async (req, res) => {
   try {
       const blogs = await blogService.getAllBlogs(req);
-      if (typeof blogs === "string") return contentNegotiation.sendResponse(404,blogs,req,res)
+      if (typeof blogs === "string") return contentNegotiation.sendErrorResponse(404,blogs,req,res)
       else return contentNegotiation.sendResponse(200,blogs,req,res)
   } 
   catch (error) { 
-    return contentNegotiation.sendResponse(404,error.message,req,res)    
+    return contentNegotiation.sendErrorResponse(404,error.message,req,res)    
   }
 };
 
@@ -23,48 +23,45 @@ exports.getAllBlogs = async (req, res) => {
 exports.getBlog = async (req, res) => {
   try {
     const blog = await blogService.getBlog(req);
-    if(typeof blog === "string") return contentNegotiation.sendResponse(404,blog,req,res)
+    if(typeof blog === "string") return contentNegotiation.sendErrorResponse(404,blog,req,res)
     return contentNegotiation.sendResponse(200,blog,req,res)
   }
   catch (error) {
-    return contentNegotiation.sendResponse(404,error.message,req,res) 
+    return contentNegotiation.sendErrorResponse(404,error.message,req,res) 
   }
 };
 
 
 exports.createBlog = async (req, res) => {
   try {
-    console.log("controller er vitor")
-    console.log(req.body)
     const newBlog = await blogService.createBlog(req);
-    console.log("controller er vitor 2")
     return contentNegotiation.sendResponse(201,newBlog,req,res)
   } catch (error) {
-    return contentNegotiation.sendResponse(404,"Blog Creation Unsuccessful",req,res) 
+    return contentNegotiation.sendErrorResponse(404,"Blog Creation Unsuccessful",req,res) 
   }
 };
 
 exports.updateBlog = async (req, res) => {
   try {
     let blog = await blogService.getBlog(req);
-    if (typeof blog === "string") return contentNegotiation.sendResponse(404,blog,req,res)
-    if (blog.username !== req.body.username) return contentNegotiation.sendResponse(403,"Not Have permission to Update",req,res)
+    if (typeof blog === "string") return contentNegotiation.sendErrorResponse(404,blog,req,res)
+    if (blog.username !== req.body.username) return contentNegotiation.sendErrorResponse(403,"Not Have permission to Update",req,res)
     blog = await blogService.updateBlog(req);
     return contentNegotiation.sendResponse(200,blog,req,res)
   } catch (error) {
-        return contentNegotiation.sendResponse(404,error.message,req,res)
+        return contentNegotiation.sendErrorResponse(404,error.message,req,res)
   }
 };
 
 exports.deleteBlog = async (req, res) => {
   try {
     const blog = await blogService.getBlog(req);
-    if (typeof blog === "string") return contentNegotiation.sendResponse(404,blog,req,res)
-    if (blog.username !== req.body.username) return contentNegotiation.sendResponse(403, "Not Have permission to delete",req,res)
+    if (typeof blog === "string") return contentNegotiation.sendErrorResponse(404,blog,req,res)
+    if (blog.username !== req.body.username) return contentNegotiation.sendErrorResponse(403, "Not Have permission to delete",req,res)
     await blogService.deleteBlog(req);
     return contentNegotiation.sendResponse(200,"Blog Deleted",req,res)
   } catch (error) {
-    return contentNegotiation.sendResponse(404,error.message,req,res)
+    return contentNegotiation.sendErrorResponse(404,error.message,req,res)
   }
 
 };

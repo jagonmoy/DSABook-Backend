@@ -30,7 +30,7 @@ class mongoAPIFeatures {
     }
     paginate(query,req) {
         const page = req.query.page * 1 || 1 ;
-        const limit = req.query.limit * 1 || 3 ;
+        const limit = req.query.limit * 1 ;
         const skip = (page-1)*limit ;
         query = query.skip(skip).limit(limit);
         if (req.query.page) {
