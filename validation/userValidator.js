@@ -3,7 +3,7 @@ const {validationResult,check} = require('express-validator')
 exports.signupUserValidation = () => {
  return [
    check('name','Name must be between 5 to 30 letters').trim().isLength({ min: 5 , max: 30}),
-   check('username','Username must be between 5 to 10 letters').trim().isLength({ min: 5 , max: 10}),
+   check('username','Username must be between 5 to 15 letters').trim().isLength({ min: 5 , max: 15}),
    check('email','Email should be valid').isEmail(),
    check("password","Password must be at least 8 characters").trim().isLength({ min: 8 }),
    check('confirmPassword').trim().custom((value, { req }) => {
