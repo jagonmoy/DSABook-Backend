@@ -11,7 +11,7 @@ DatabaseConnection();
 
 const port = process.env.PORT || 3010;
 
-const host  = process.env.IP || '127.0.0.1' ;
+const host  = process.env.HOST || '127.0.0.1' ;
 
 app.listen(port, host , () => {
     console.log(host);
