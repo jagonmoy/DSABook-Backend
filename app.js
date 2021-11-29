@@ -18,18 +18,16 @@ app.use(cookieParser())
 app.use(cors());
 app.use(morgan('dev'));
 
+app.use('/api/blogs',blogRouter);
+app.use('/api/users',userRouter);
+app.use('/api/auth',authRouter);
+
 if (process.env.NODE_ENV === 'PROD') {
+    console.log("kire")
     app.use(express.static('build'));
     app.get('*',(req,res) => {
         res.sendFile(path.resolve(__dirname,'build','index.html'))
     })
 }
-else {
-app.use('/api/blogs',blogRouter);
-app.use('/api/users',userRouter);
-app.use('/api/auth',authRouter);
-}
-
-
 
 module.exports = app ;
