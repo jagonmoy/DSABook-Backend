@@ -20,4 +20,11 @@ app.use('/api/blogs',blogRouter);
 app.use('/api/users',userRouter);
 app.use('/api/auth',authRouter);
 
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('build'));
+    app.get('*',(req,res) => {
+        res.sendFile(path.resolve(__dirname,'build','index.html'))
+    })
+}
+
 module.exports = app ;
