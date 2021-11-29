@@ -1,4 +1,5 @@
 const  MongoBlog = require("../../models/blogModel");
+const  MongoUser = require("../../models/userModel")
 const {BlogDao} = require ("./blogDao");
 const {mongoAPIFeatures} = require("../../utils/apiFeatures/mongoBlogFeatures");
 const {BlogDto} = require("../../dto/blogDto");
@@ -9,7 +10,6 @@ class MongoBlogDao extends BlogDao {
     async getAllBlogs(req) {
         let query = mongoAPIFeatures.prototype.filter(req); 
         query = mongoAPIFeatures.prototype.sort(query,req);
-        // query = mongoAPIFeatures.prototype.limitingFields(query,req);
         query = mongoAPIFeatures.prototype.paginate(query,req);
         const mongoBlogs = await query;
         if (!mongoBlogs.length) return "blogs doesnot exist";
@@ -29,9 +29,19 @@ class MongoBlogDao extends BlogDao {
         return new BlogDto(blog) ;
     }
     async createBlog(req) {
-        //console.log("dhukeche");
-        const newBlog = await MongoBlog.create(req.body);
-        return new BlogDto(newBlog);
+        let newBlog = await MongoBlog.create(req.body);
+        const username = req.body.username;
+        const user = await MongoUser.findOne({username});
+        user.blogs.push(newBlog);
+        user.save(function(err,result){
+          if (err){
+              console.log(err);
+          }
+          else{
+              console.log(result)
+          }
+        })
+        return newBlog;
     }
     async updateBlog(req) {
         const blog = await MongoBlog.findByIdAndUpdate(req.params.id, req.body, {

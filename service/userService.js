@@ -6,8 +6,7 @@ class UserService {
         return this.userDao.getAllUsers(req);
     }
     async getUser(username) {
-        return this.userDao.getUser(username)
+        return await this.userDao.getUser(username)
     }
   }
-  
   module.exports = {UserService}

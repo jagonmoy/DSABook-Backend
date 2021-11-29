@@ -14,7 +14,6 @@ exports.sendResponse = (statusCode,data,req,res) => {
     }
 }
 exports.sendErrorResponse = (statusCode,data,req,res) => {
-    console.log("hello Bangladesh")
     const format = req.headers.accept;
     if ( format === "application/xml") {
         res.type(format);

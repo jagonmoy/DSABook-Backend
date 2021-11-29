@@ -14,13 +14,11 @@ exports.isSignedIn = async(req, res,next) => {
       }
     } 
     catch (error) {
-      console.log(4)
       contentNegotiation.sendResponse(404,error.message,req,res,null);
     }
 };
 exports.notSignedIn = async(req, res,next) => {
     try {
-        console.log("Checking")
         try { 
             const token = req.headers.authorization;
             const decoder = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
