@@ -22,7 +22,7 @@ app.use('/api/blogs',blogRouter);
 app.use('/api/users',userRouter);
 app.use('/api/auth',authRouter);
 
-if (process.env.NODE_ENV === 'PROD') {
+if (process.env.NODE_ENV === 'production') {
     console.log("kire")
     app.use(express.static('build'));
     app.get('*',(req,res) => {
