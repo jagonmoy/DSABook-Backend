@@ -4,10 +4,10 @@ exports.signupUserValidation = () => {
  return [
    check('name','Name must be between 5 to 30 letters').trim().isLength({ min: 5 , max: 30}),
    check('username','Username must be between 5 to 15 letters').trim().isLength({ min: 5 , max: 15}),
-   check('email','Email should be valid').isEmail(),
-   check("password","Password must be at least 8 characters").trim().isLength({ min: 8 }),
-   check('confirmPassword').trim().custom((value, { req }) => {
-      if (value !== req.body.password) throw new Error('Password Does not match');
+   check('email','Email should be valid').trim().isEmail(),
+   check("password","Password must be at least 8 characters").isLength({ min: 8 }),
+   check('confirmPassword').custom((value, { req }) => {
+      if (value !== req.body.password) throw new Error('Confirmation Password Does not match');
       return true
   }),
  ]
@@ -15,7 +15,7 @@ exports.signupUserValidation = () => {
  exports.signinUserValidation = () => {
   return [
     check('email','Email field should not be Empty and it should be valid').trim().notEmpty().isEmail(),
-    check('password','Password filed should not be Empty').trim().notEmpty(),
+    check('password','Password filed should not be Empty').notEmpty(),
    ]
 }
  
