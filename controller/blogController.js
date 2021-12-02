@@ -58,6 +58,7 @@ exports.deleteBlog = async (req, res) => {
   try {
     const blog = await blogService.getBlog(req);
     if (typeof blog === "string") return contentNegotiation.sendErrorResponse(404,blog,req,res)
+    if (blog.username !== req.body.username || req.body.username != "admin") return contentNegotiation.sendErrorResponse(403, "Not Have permission to delete",req,res)
     await blogService.deleteBlog(req);
     return contentNegotiation.sendResponse(200,"Blog Deleted",req,res)
   } catch (error) {
