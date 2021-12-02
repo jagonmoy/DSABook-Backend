@@ -5,6 +5,7 @@ const blogRouter = require('./routes/blogRoutes');
 const userRouter = require('./routes/userRoutes');
 const authRouter = require('./routes/authRoutes');
 const morgan = require('morgan');
+const path = require('path');
 
 const app = express();
 
