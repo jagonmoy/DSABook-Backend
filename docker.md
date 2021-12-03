@@ -60,4 +60,4 @@ release the app in container
 
     heroku container:release web
 
-Here is my app published in Heroku : https://dashboard.heroku.com/apps/dsa-book
+Here is my app published in Heroku : https://dsa-book.herokuapp.com/
