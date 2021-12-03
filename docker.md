@@ -6,7 +6,7 @@
 installed docker in my machine . 
 
 ### Step 2 :
-typed the follwing commands:
+Ran the following commands in terminal :
 
     sudo systemctl restart docker
 
@@ -25,7 +25,7 @@ built the docker file with a tag
     docker build . -t jagonmoy/dsa-book-dockerize:v1.0.0
 
 ### Step 5:
-Checked the Docker image if it runs
+Checked the Docker image if it ran
     
     docker run -it -p 60:8015 -d jagonmoy/dsa-book-dockerize:v1.0.0
 
