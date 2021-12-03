@@ -20,7 +20,7 @@ went to the directory of dockerfile
     cd Cefalo-Internship-Nodejs
 
 ### Step 4 :
-built the docker file with a tag
+built the docker image with a tag
     
     docker build . -t jagonmoy/dsa-book-dockerize:v1.0.0
 
@@ -51,7 +51,7 @@ Log in to Heroku Container
     heroku container:login
 
 ### Step 3 :
-pushed the dockerfile into container
+build an image and pushed it to Container Registry
     
     heroku container:push web
 
