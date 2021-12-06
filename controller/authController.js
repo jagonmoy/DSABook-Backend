@@ -36,7 +36,6 @@ exports.signin = async (req, res) => {
       ),
       secure: true,
       sameSite: 'None',
-      httpOnly: true
     })
     return contentNegotiation.sendResponse(200,user.username,req,res);
   } catch (error) {
@@ -46,9 +45,8 @@ exports.signin = async (req, res) => {
  exports.signout = async (req, res) => {
     res.cookie('jwt', 'null', {
       expires: new Date(Date.now() + 10 * 1000),
+      secure: true,
       sameSite: 'None',
-      httpOnly: true,
-      secure: true
     })
     return contentNegotiation.sendResponse(200,"Signed Out Successfully!",req,res);
  };
