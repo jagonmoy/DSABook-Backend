@@ -26,6 +26,7 @@ exports.signin = async (req, res) => {
   try {
     const user = await authService.signinUser(req);
     if (typeof user === "string") return contentNegotiation.sendErrorResponse(401,user,req,res);
+
     const token =  jwt.sign({username : user.username},process.env.JWT_SECRET,{
       expiresIn: process.env.JWT_EXPIRE
     })
@@ -37,6 +38,7 @@ exports.signin = async (req, res) => {
       secure: true,
       sameSite: 'None',
     })
+
     return contentNegotiation.sendResponse(200,user.username,req,res);
   } catch (error) {
     return contentNegotiation.sendErrorResponse(401,error.message,req,res);
