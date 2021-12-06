@@ -14,7 +14,6 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser())
-app.set("trust proxy", 1)
 app.use(
     session({
       secret: process.env.SESSION_SECRET || 'anysecret',
@@ -30,7 +29,7 @@ app.use(
 app.use(
     cors({
       credentials: true,
-      origin: "https://dsa-book-frontend.herokuapp.com/:1"
+      origin: "https://dsa-book-frontend.herokuapp.com/"
     })
   );
 app.use(morgan('dev'));
