@@ -13,7 +13,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser())
-app.use(cors({origin : 'dsa-book.herokuapp.com'}));
+app.use(cors());
 app.use(morgan('dev'));
 
 app.use('/api/blogs',blogRouter);
