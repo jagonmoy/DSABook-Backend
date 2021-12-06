@@ -34,7 +34,8 @@ exports.signin = async (req, res) => {
       expires: new Date(
         Date.now() + process.env.JWT_COOKIE_EXPIRE*24*60*60*1000  
       ),
-      //secure: true,
+      secure: true,
+      sameSite: 'None',
       httpOnly: true
     })
     return contentNegotiation.sendResponse(200,user.username,req,res);
@@ -45,8 +46,9 @@ exports.signin = async (req, res) => {
  exports.signout = async (req, res) => {
     res.cookie('jwt', 'null', {
       expires: new Date(Date.now() + 10 * 1000),
+      sameSite: 'None',
       httpOnly: true,
-      //secure: true
+      secure: true
     })
     return contentNegotiation.sendResponse(200,"Signed Out Successfully!",req,res);
  };
