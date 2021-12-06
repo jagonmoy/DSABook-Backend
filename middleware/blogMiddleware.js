@@ -10,6 +10,7 @@ const userService = new UserService(mongoUserDao);
 exports.protect = async(req, res,next) => {
     try {
       let token = req.cookies.jwt ;
+      console.log(token);
       if (typeof req.cookies.jwt === "undefined") {
         return contentNegotiation.sendResponse(401,"You are not logged in",req,res,null);
       }
