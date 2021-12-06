@@ -29,7 +29,7 @@ app.use(cookieParser())
 app.use(
     cors({
       credentials: true,
-      origin: 'https://dsa-book-frontend.herokuapp.com'
+      origin: 'true'
     })
   );
 app.use(morgan('dev'));
