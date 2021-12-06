@@ -35,7 +35,6 @@ exports.signin = async (req, res) => {
       expires: new Date(
         Date.now() + process.env.JWT_COOKIE_EXPIRE*24*60*60*1000  
       ),
-      origin: "https://dsa-book-frontend.herokuapp.com" ,
       secure: true,
       sameSite: 'None',
     })
@@ -48,7 +47,6 @@ exports.signin = async (req, res) => {
  exports.signout = async (req, res) => {
     res.cookie('jwt', 'null', {
       expires: new Date(Date.now() + 10 * 1000),
-      origin: "https://dsa-book-frontend.herokuapp.com",
       secure: true,
       sameSite: 'None',
     })
