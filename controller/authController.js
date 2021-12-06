@@ -37,6 +37,7 @@ exports.signin = async (req, res) => {
       ),
       secure: true,
       sameSite: 'None',
+      httponly: true ,
     })
 
     return contentNegotiation.sendResponse(200,user.username,req,res);
@@ -49,6 +50,7 @@ exports.signin = async (req, res) => {
       expires: new Date(Date.now() + 10 * 1000),
       secure: true,
       sameSite: 'None',
+      httponly: true
     })
     return contentNegotiation.sendResponse(200,"Signed Out Successfully!",req,res);
  };
