@@ -1,5 +1,4 @@
 const express = require('express');
-const session = require('express-session');
 const dotenv = require('dotenv');
 dotenv.config({path : './config.env'})
 const cors = require('cors');
@@ -26,7 +25,6 @@ app.use(morgan('dev'));
 app.use('/api/blogs',blogRouter);
 app.use('/api/users',userRouter);
 app.use('/api/auth',authRouter);
-
 app.use('*',(req,res) => {
   res.sendFile(path.resolve('views/apiRoutes.html'));
 })

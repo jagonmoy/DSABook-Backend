@@ -1,10 +1,10 @@
 const contentNegotiation = require("../utils/contentNegotiation")
 const {AuthService} = require("../service/authService")
 const {MongoAuthDao} = require("../dao/auth/mongoAuthDao")
-const  sendJWTToken = require("../utils/sendJWTToken")
+const  JWTToken = require("../utils/JWTToken")
 const dotenv = require('dotenv');
-const jwt = require('jsonwebtoken')
-dotenv.config({path : './config.env'})
+dotenv.config({path : '../config.env'})
+
 
 const mongoAuthDao = new MongoAuthDao();
 const authService = new AuthService(mongoAuthDao);
@@ -26,32 +26,19 @@ exports.signin = async (req, res) => {
   try {
     const user = await authService.signinUser(req);
     if (typeof user === "string") return contentNegotiation.sendErrorResponse(401,user,req,res);
-    console.log("ki")
-    const token =  jwt.sign({username : user.username},process.env.JWT_SECRET,{
-      expiresIn: process.env.JWT_EXPIRE
-    })
-     
-    res.cookie('jwt', token, {
-      expires: new Date(
-        Date.now() + process.env.JWT_COOKIE_EXPIRE*24*60*60*1000  
-      ),
-      secure: true,
-      sameSite: 'None',
-      httponly: true ,
-    })
 
+    const {token,cookieOptions} = JWTToken.sendJWTToken(user.username)
+
+    res.cookie("jwt",token,cookieOptions);
     return contentNegotiation.sendResponse(200,user.username,req,res);
   } catch (error) {
     return contentNegotiation.sendErrorResponse(401,error.message,req,res);
   }
  };
  exports.signout = async (req, res) => {
-    res.cookie('jwt', 'null', {
-      expires: new Date(Date.now() + 10 * 1000),
-      secure: true,
-      sameSite: 'None',
-      httponly: true
-    })
-    return contentNegotiation.sendResponse(200,"Signed Out Successfully!",req,res);
+      
+  const cookieOptions  = JWTToken.clearToken();
+  res.cookie("jwt",'',cookieOptions)
+  return contentNegotiation.sendResponse(200,"Signed Out Successfully!",req,res);
  };
  
