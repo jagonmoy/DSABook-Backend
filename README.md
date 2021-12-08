@@ -50,13 +50,13 @@ Install Docker in your machine and do all the commands and procedure to start do
 [This might help you to install docker in your machine](https://docs.docker.com/get-docker/) or you can find many youtube Tutorials . <br>
 After Installing Docker in your machine and starting docker in your terminal you can type following command  .<br>
 
-    docker run -it -p <port-number>:8015 -d jagonmoy/dsa-book-dockerize:v1.0.0
+    docker run -it -p <port-number>:8015 -d jagonmoy/dsa-book-backend:v1.0.0
 
 In place of **port-number** you will use any port number which is free and where you are wishing to run this application .
 
 suppose , you want to use the port number **60** then your command will be <br>
   
-    ​docker run -it -p 60:8015 -d jagonmoy/dsa-book-dockerize:v1.0.0
+    ​docker run -it -p 60:8015 -d jagonmoy/dsa-book-backend:v1.0.0
 
 **(REST API)** Now you can visit backend part  of **DSABook** in :
 http://localhost:60/
