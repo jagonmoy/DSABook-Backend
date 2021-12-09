@@ -56,11 +56,11 @@ In my Internship Program in **Cefalo Bangladesh Limited** I was asked to create 
 
 <h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#getblog" > 3.2.2 &nbsp; Get a Blog :&nbsp; GET &nbsp;  /api/blogs/:id/ </a> </h4>
 
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signout" > 3.2.3 &nbsp; Sign Out :&nbsp; POST &nbsp; /api/auth/signout/ </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#createblog" > 3.2.3 &nbsp; Create Blog :&nbsp; POST &nbsp; /api/blogs/ </a> </h4>
 
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signup" > 3.2.4 &nbsp; Sign Up :&nbsp; POST &nbsp; /api/auth/signup/ </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#updateblog" > 3.2.4 &nbsp; Update Blog :&nbsp; PATCH &nbsp; /api/blogs/:id/ </a> </h4>
 
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signin" > 3.2.5 &nbsp; Sign In :&nbsp; POST &nbsp; /api/auth/signin/ </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#deleteblog" > 3.2.5 &nbsp; Delete Blog :&nbsp; DELETE &nbsp; /api/blogs/:id/ </a> </h4>
 
 <br>
 
