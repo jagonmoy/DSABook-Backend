@@ -11,95 +11,69 @@ In my Internship Program in **Cefalo Bangladesh Limited** I was asked to create 
 
 # Table of Contents
 <ul>
-<li> <h3> <a href = "#introduction" > 1. Introduction </a> </h3> </li>
+<li> <h3> <a href = "#introduction" > 1. &nbsp; Introduction </a> </h3> </li>
 <br>
 
-<h4>&nbsp; &nbsp; &nbsp;<a href = "#motivation" > 1.1 Motivation </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp;<a href = "#motivation" > 1.1 &nbsp; Motivation </a> </h4>
 
-<br>
+<h4>&nbsp; &nbsp; &nbsp;<a href = "#technology" > 1.2 &nbsp; Technology </a> </h4>
 
-<h4>&nbsp; &nbsp; &nbsp;<a href = "#technology" > 1.2 Technology </a> </h4>
-
-<br>
-
-<h4>&nbsp; &nbsp; &nbsp;<a href = "#runproject" > 1.3 How to Run this Project in your machine </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp;<a href = "#runproject" > 1.3 &nbsp; How to Run this Project in your machine </a> </h4>
 
 <br>
 
-<li> <h3> <a href = "#deployment" > 2. Deployment </a> </h3> </li> 
+<li> <h3> <a href = "#deployment" > 2. &nbsp; Deployment </a> </h3> </li> 
 
 <br>
 
-<h4>&nbsp; &nbsp; &nbsp;<a href = "#deployheroku" > 2.1 Deployment in Heroku </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp;<a href = "#deployheroku" > 2.1 &nbsp; Deployment in Heroku </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp;<a href = "#deploydockerhub" > 2.2 &nbsp; Docker Image Deployed in Docker Hub </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp;<a href = "#runimage" > 2.3 &nbsp; How to Run this Docker image in your machine </a> </h4>
 
 <br>
 
-<h4>&nbsp; &nbsp; &nbsp;<a href = "#deploydockerhub" > 2.2 Docker Image Deployed in Docker Hub </a> </h4>
+<li> <h3> <a href = "#api" > 3.&nbsp;  API Documentation </a> </h3> </li> 
 
 <br>
 
-<h4>&nbsp; &nbsp; &nbsp;<a href = "#runimage" > 2.3 How to Run this Docker image in your machine </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp;<a href = "#authapi" > 3.1 &nbsp; Auth Related Endpoints </a> </h4>
 
 <br>
 
-<li> <h3> <a href = "#api" > 3. API Documentation </a> </h3> </li> 
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signup" > 3.1.1 &nbsp;  Sign Up :&nbsp; POST &nbsp; /api/auth/signup/ </a> </h4>
+
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signin" > 3.1.2 &nbsp; Sign In :&nbsp; POST &nbsp; /api/auth/signin/ </a> </h4>
+
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signout" > 3.1.3 &nbsp;  Sign Out :&nbsp; POST &nbsp; /api/auth/signout/ </a> </h4>
 
 <br>
 
-<h4>&nbsp; &nbsp; &nbsp;<a href = "#authapi" > 3.1 Auth Related Endpoints </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp;<a href = "#blogapi" > 3.2 &nbsp;  Blog Related Endpoints </a> </h4>
 
 <br>
 
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signup" > 3.1.1 Sign Up :&nbsp; POST &nbsp; /api/auth/signup/ </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#getallblogs" > 3.2.1 &nbsp; Get All Blogs:&nbsp; GET  &nbsp;   /api/blogs/ </a> </h4>
 
-<br>
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#getblog" > 3.2.2 &nbsp; Get a Blog :&nbsp; GET &nbsp;  /api/blogs/:id/ </a> </h4>
 
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signin" > 3.1.2 Sign In :&nbsp; POST &nbsp; /api/auth/signin/ </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signout" > 3.2.3 &nbsp; Sign Out :&nbsp; POST &nbsp; /api/auth/signout/ </a> </h4>
 
-<br>
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signup" > 3.2.4 &nbsp; Sign Up :&nbsp; POST &nbsp; /api/auth/signup/ </a> </h4>
 
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signout" > 3.1.3 Sign Out :&nbsp; POST &nbsp; /api/auth/signout/ </a> </h4>
-
-<br>
-
-<h4>&nbsp; &nbsp; &nbsp;<a href = "#blogapi" > 3.2 Blog Related Endpoints </a> </h4>
-
-<br>
-
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#getallblogs" > 3.2.1 Get All Blogs:&nbsp; GET  &nbsp;   /api/blogs/ </a> </h4>
-
-<br>
-
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#getblog" > 3.2.2 Get a Blog :&nbsp; GET &nbsp;  /api/blogs/:id/ </a> </h4>
-
-<br>
-
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signout" > 3.2.3 Sign Out :&nbsp; POST &nbsp; /api/auth/signout/ </a> </h4>
-
-<br>
-
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signup" > 3.2.4 Sign Up :&nbsp; POST &nbsp; /api/auth/signup/ </a> </h4>
-
-<br>
-
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signin" > 3.2.5 Sign In :&nbsp; POST &nbsp; /api/auth/signin/ </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#signin" > 3.2.5 &nbsp; Sign In :&nbsp; POST &nbsp; /api/auth/signin/ </a> </h4>
 
 <br>
 
 
-<h4>&nbsp; &nbsp; &nbsp;<a href = "#userapi" > 3.3 User Related Endpoints </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp;<a href = "#userapi" > 3.3 &nbsp; User Related Endpoints </a> </h4>
 
 <br>
 
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#getallusers" > 3.3.1 Get All Users:&nbsp; GET  &nbsp;   /api/users/ </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#getallusers" > 3.3.1 &nbsp;  Get All Users:&nbsp; GET  &nbsp;   /api/users/ </a> </h4>
 
-<br>
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#getuser" > 3.3.2 &nbsp; Get a User :&nbsp; GET &nbsp;  /api/users/:username/ </a> </h4>
 
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#getuser" > 3.3.2 Get a User :&nbsp; GET &nbsp;  /api/users/:username/ </a> </h4>
-
-<br>
-
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#getuserblogs" > 3.3.3 Sign Out :&nbsp; GET &nbsp; /api/users/:username/myblog </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#getuserblogs" > 3.3.3 &nbsp; Sign Out :&nbsp; GET &nbsp; /api/users/:username/myblog </a> </h4>
 
 <br><br>
 
