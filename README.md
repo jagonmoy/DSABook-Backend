@@ -133,7 +133,7 @@ DATABASE = < mongodb atlas url which is connected to your node application > ( e
 JWT_SECRET = < any string > (e.g thisIsMySecret)
 JWT_EXPIRE = 5000d
 JWT_COOKIE_EXPIRE = 5000
-NODE_ENV = production
+NODE_ENV = test
 
 </pre>
 
@@ -146,7 +146,7 @@ DATABASE = mongodb+srv://username:password@cluster0.sxo2i.mongodb.net/projectNam
 JWT_SECRET = thisIsMySecret
 JWT_EXPIRE = 5000d
 JWT_COOKIE_EXPIRE = 5000
-NODE_ENV = production
+NODE_ENV = test
 </pre>
 
 <br>
