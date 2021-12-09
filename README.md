@@ -73,7 +73,7 @@ In my Internship Program in **Cefalo Bangladesh Limited** I was asked to create 
 
 <h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#getuser" > 3.3.2 &nbsp; Get a User :&nbsp; GET &nbsp;  /api/users/:username/ </a> </h4>
 
-<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#getuserblogs" > 3.3.3 &nbsp; Sign Out :&nbsp; GET &nbsp; /api/users/:username/myblog </a> </h4>
+<h4>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href =  "#getuserblogs" > 3.3.3 &nbsp; Get Blogs of a User :&nbsp; GET &nbsp; /api/users/:username/myblog </a> </h4>
 
 <br><br>
 
@@ -99,7 +99,8 @@ In my Internship Program in **Cefalo Bangladesh Limited** I was asked to create 
   [JEST](https://jestjs.io/) : &nbsp; javascript testing framework <br>
   [Sinon.js](https://sinonjs.org/) : &nbsp; Standalone test spies, stubs and mocks for JavaScript. Works with any unit testing framework.<br>
   [Docker](https://www.docker.com/): &nbsp; to take away repetitive configuration task for running it in machine
-
+  <br><br>
+  and others...
 <br>
 
 ## <h2 id = 'runproject' > 1.3  How to Run this Project </h2>
@@ -197,13 +198,13 @@ Install Docker in your machine and do all the commands and procedure to start do
 [This might help you to install docker in your machine](https://docs.docker.com/get-docker/) or you can find many youtube Tutorials . <br>
 After Installing Docker in your machine and starting docker in your terminal you can type following command  .<br>
 
-    docker run -it -p <port-number>:8015 -d jagonmoy/dsa-book-backend:v1.0.0
+    docker run -it -p <port-number>:8015 -d jagonmoy/dsa-book-backend:<tag-name>
 
-In place of **port-number** you will use any port number which is free and where you are wishing to run this application .
+In place of **port-number** use any port number which is free and where you are wishing to run this application . In place of **tag-name** use the latest version available in docker hub .
 
-suppose , you want to use the port number **60** then your command will be <br>
+suppose , you want to use the port number **60** and the latest tag is **v2.0.0** then your command will be <br>
   
-    ​docker run -it -p 60:8015 -d jagonmoy/dsa-book-backend:v1.0.0
+    ​docker run -it -p 60:8015 -d jagonmoy/dsa-book-backend:v2.0.0
 
 Now you can visit backend part  of **DSABook** in :
 http://localhost:60/
@@ -858,7 +859,7 @@ http://localhost:60/
     ```
     <br>
 
-- ### <h3 id = 'getuserblogs'> 3.3.3 Get blogs of  User : &nbsp;  **GET &nbsp; /api/blogs/:username/myblog** </h2> <br><br> 
+- ### <h3 id = 'getuserblogs'> 3.3.3 Get blogs of a User : &nbsp;  **GET &nbsp; /api/blogs/:username/myblog** </h2> <br><br> 
 
   - #### **Valid Response**: <br><br>
   
