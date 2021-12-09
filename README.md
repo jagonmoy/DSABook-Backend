@@ -85,7 +85,7 @@ In my Internship Program in **Cefalo Bangladesh Limited** I was asked to create 
 ## <h2 id = 'motivation' > 1.1 Motivation </h2>
 <br>
 
-In my Internship Program in **Cefalo Bangladesh Limited** I was asked to create a web Application having CRUD functionalities . I have named my CRUD application **DSABook** as it contains blogs regarding data Structures and algorithms .In this readme I will mainly describe functionalities, code structures , api documentation and everyting related to backend part of DSABook web application . 
+In my Internship Program in **Cefalo Bangladesh Limited** I was asked to create a web Application having CRUD functionalities . I have named my CRUD application **DSABook** as it contains blogs regarding data Structures and algorithms .In this readme I will mainly describe everyting related to backend part of DSABook web application . 
 
 <br>
 
