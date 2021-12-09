@@ -38,8 +38,9 @@ exports.getUser = async (req, res) => {
        return contentNegotiation.sendErrorResponse(404,err.message,req,res)    
       }
       else {
+      if ( user === null) return contentNegotiation.sendErrorResponse(404,"This Username doesnot exist",req,res) 
       const mongoBlogs = user.blogs;
-      if (!mongoBlogs.length) return contentNegotiation.sendErrorResponse(404,"blogs doesnot exist",req,res)        
+      if (!mongoBlogs.length) return contentNegotiation.sendErrorResponse(404,"blogs do not exist",req,res)        
       else return contentNegotiation.sendResponse(200,mongoBlogs,req,res)
       }
     });

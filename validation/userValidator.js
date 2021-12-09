@@ -14,7 +14,8 @@ exports.signupUserValidation = () => {
 }
  exports.signinUserValidation = () => {
   return [
-    check('email','Email field should not be Empty and it should be valid').trim().notEmpty().isEmail(),
+    check('email','Email field should not be Empty').trim().notEmpty(),
+    check('email','Email field should be valid').trim().isEmail(),
     check('password','Password filed should not be Empty').notEmpty(),
    ]
 }

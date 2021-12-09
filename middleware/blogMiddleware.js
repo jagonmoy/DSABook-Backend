@@ -12,7 +12,7 @@ exports.protect = async(req, res,next) => {
       let token = req.cookies.jwt ;
       console.log(token);
       if (typeof req.cookies.jwt === "undefined") {
-        return contentNegotiation.sendResponse(401,"You are not logged in",req,res,null);
+        return contentNegotiation.sendErrorResponse(401,"You are not logged in",req,res,null);
       }
       else token = req.cookies.jwt;
 
@@ -25,13 +25,13 @@ exports.protect = async(req, res,next) => {
       }
       
       const legitUser = await userService.getUser(decoded.username);
-      if(typeof legitUser.username === "undefined") rcontentNegotiation.sendResponse(401,"Token Belongs To the User Does not Exits",req,res,null);
+      if(typeof legitUser.username === "undefined") contentNegotiation.sendErrorResponse(401,"Token Belongs To the User Does not Exits",req,res,null);
   
       req.body.username = decoded.username;
   
       next();
     } 
     catch (error) {
-      contentNegotiation.sendResponse(404,error.message,req,res,null);
+      contentNegotiation.sendErrorResponse(404,error.message,req,res,null);
     }
 };

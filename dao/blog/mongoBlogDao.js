@@ -12,7 +12,7 @@ class MongoBlogDao extends BlogDao {
         query = mongoAPIFeatures.prototype.sort(query,req);
         query = mongoAPIFeatures.prototype.paginate(query,req);
         const mongoBlogs = await query;
-        if (!mongoBlogs.length) return "blogs doesnot exist";
+        if (!mongoBlogs.length) return "blogs do not exist";
         let allBlogs  = [] ;
         for ( let i = 0 ; i < mongoBlogs.length; i++) {
             allBlogs[i] = new BlogDto(mongoBlogs[i]);
