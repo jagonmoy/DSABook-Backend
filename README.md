@@ -490,7 +490,7 @@ http://localhost:60/
   
 <br>
 
-- ### <h3 id = 'getblog'> 3.2.2 Get a Blog : &nbsp;  **GET &nbsp; /api/blogs/:id/** </h2> <br><br> 
+- ### <h3 id = 'getblog'> 3.2.2 Get a Blog : &nbsp;  **GET &nbsp; /api/blogs/id/** </h2> <br><br> 
 
   - #### **Valid Response**: <br><br>
   
