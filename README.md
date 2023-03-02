@@ -233,7 +233,7 @@ http://localhost:60/
           "username" : "jagoth",
           "email" : "jagoth@mail.com",
           "password" : "12345678",
-          "confirmpassword" : "12345678"
+          "confirmPassword" : "12345678"
       }
      ```
      <br>
