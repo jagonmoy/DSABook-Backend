@@ -7,7 +7,7 @@ exports.signupUserValidation = () => {
    check('email','Email should be valid').trim().isEmail(),
    check("password","Password must be at least 8 characters").isLength({ min: 8 }),
    check('confirmPassword').custom((value, { req }) => {
-      if (value !== req.body.password) throw new Error('Confirmation Password Does not match');
+      if (req.body.confirmPassword !== req.body.password) throw new Error('Confirmation Password Does not match');
       return true
   }),
  ]
@@ -22,6 +22,7 @@ exports.signupUserValidation = () => {
  
 exports.validate = (req, res, next) => {
  const errors = validationResult(req)
+ console.log(req.body);
  if (errors.isEmpty()) {
    return next()
  }
