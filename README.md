@@ -233,7 +233,7 @@ http://localhost:60/
           "username" : "jagoth",
           "email" : "jagoth@mail.com",
           "password" : "12345678",
-          "confirmpassword" : "12345678"
+          "confirmPassword" : "12345678"
       }
      ```
      <br>
@@ -490,7 +490,7 @@ http://localhost:60/
   
 <br>
 
-- ### <h3 id = 'getblog'> 3.2.2 Get a Blog : &nbsp;  **GET &nbsp; /api/blogs/:id/** </h2> <br><br> 
+- ### <h3 id = 'getblog'> 3.2.2 Get a Blog : &nbsp;  **GET &nbsp; /api/blogs/id/** </h2> <br><br> 
 
   - #### **Valid Response**: <br><br>
   
