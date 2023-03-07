@@ -4,6 +4,7 @@
     "description": "A CRUD project build with Nodejs",
     "main": "app.js",
     "scripts": {
+        "autoStart" : "nodemon server.js",
         "start": "node server.js",
         "test": "jest --detectOpenHandles"
     },
