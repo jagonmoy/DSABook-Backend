@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 
 exports.isSignedIn = async(req, res,next) => {
     try {
-      const token = req.cookies.jwt;
+      const token = req.headers.authorization;
       if (typeof token === "undefined" || token === '') {
         console.log("hello")
         next()
@@ -16,6 +16,7 @@ exports.isSignedIn = async(req, res,next) => {
       }
     } 
     catch (error) {
+      console.log("kireee")
       return contentNegotiation.sendErrorResponse(404,error.message,req,res,null);
     }
 };

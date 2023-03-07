@@ -3,15 +3,15 @@ const dotenv = require('dotenv');
 dotenv.config({path : './config.env'})
 const app = require('./app');
 
-const DatabaseConnection = () => {
-    mongoose.connect(process.env.DATABASE,{
+const DatabaseConnection = async ()  => {
+    await mongoose.connect(process.env.DATABASE,{
         useNewUrlParser: true,
         useCreateIndex: true,
         useFindAndModify: false,
         useUnifiedTopology: true
-    }).then(con => {
+    }).then(() => {
         console.log('Database is Connected');
-    });
+    }).catch((err) => console.log('Database connection is unsuccessful! ',err));
 }
 DatabaseConnection();
 

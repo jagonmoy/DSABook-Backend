@@ -24,13 +24,19 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res) => {
   try {
-    const user = await authService.signinUser(req);
-    if (typeof user === "string") return contentNegotiation.sendErrorResponse(401,user,req,res);
+    console.log("hey")
+    const authServiceSignInResponse = await authService.signinUser(req);
+    let user;
+    if (typeof authServiceSignInResponse === "string") {
+      console.log(authServiceSignInResponse);
+      return contentNegotiation.sendErrorResponse(401,authServiceSignInResponse,req,res);
+    }
+    else user = authServiceSignInResponse;
+    // const {token,cookieOptions} = JWTToken.sendJWTToken(user.username)
+    const {accessToken,refreshToken} = JWTToken.generateTokens(user.username);
 
-    const {token,cookieOptions} = JWTToken.sendJWTToken(user.username)
-
-    res.cookie("jwt",token,cookieOptions);
-    return contentNegotiation.sendResponse(200,user.username,req,res);
+    res.headers.set('Authorization',`Bearer ${accessToken}`);
+    return contentNegotiation.sendResponse(200,{accessToken : accessToken, refreshToken: refreshToken},req,res);
   } catch (error) {
     return contentNegotiation.sendErrorResponse(401,error.message,req,res);
   }
