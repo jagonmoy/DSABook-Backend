@@ -15,7 +15,7 @@ exports.signup = async (req, res) => {
  try {
    const newUser = await authService.signupUser(req);
    if(typeof newUser === "string") return contentNegotiation.sendErrorResponse(403,newUser,req,res);
-   else return contentNegotiation.sendResponse(200,newUser,req,res);
+   else return contentNegotiation.sendResponse(201,null,req,res);
  } 
  catch (error) {
    return contentNegotiation.sendErrorResponse(403,error.message,req,res);
@@ -42,7 +42,7 @@ exports.signin = async (req, res) => {
  exports.signout = async (req, res) => {
   const refreshToken = req.body.refreshToken ; 
   JWTToken.clearSingleToken(refreshToken,req.username);
-  return contentNegotiation.sendResponse(200,"Signed Out Successfully!",req,res);
+  return contentNegotiation.sendResponse(204,null,req,res);
  };
 
  exports.getNewAccessToken = async (req,res) => {
