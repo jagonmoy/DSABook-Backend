@@ -27,7 +27,9 @@ const userSchema = new mongoose.Schema({
      required: true,
      select: false,
   },
-  blogs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
+  refreshTokens: [{ type: String}]
+  ,
+  blogs : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]
 },{
   timestamps : true
 });

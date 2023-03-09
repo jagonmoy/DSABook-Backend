@@ -1,59 +1,38 @@
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv');
 dotenv.config({path : '../config.env'})
+const MongoUser = require("../models/userModel");
 
-
-// exports.sendJWTToken = (username) => {
-//     const token =  jwt.sign({username : username},process.env.JWT_SECRET,{
-//       expiresIn: process.env.JWT_EXPIRE
-//     })
-//     let cookieOptions;
-//     console.log(process.env.NODE_ENV)
-//     if (process.env.NODE_ENV === "test") {
-//       cookieOptions = {
-//         expires: new Date(
-//           Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-//         ),
-//         httponly: true,
-//       };
-//     } 
-//     else if ( process.env.NODE_ENV === 'production') {
-//       cookieOptions = {
-//         expires: new Date(
-//           Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-//         ),
-//         secure: true,
-//         sameSite: "None",
-//       };
-//     }
-    
-//     return {cookieOptions,token};
-// }
-
-exports.generateTokens = (username) => {
-    const accessToken =  jwt.sign({username : username},process.env.ACCESS_TOKEN_SECRET,{
+exports.generateAccessToken = (username) => {
+    const accessToken = jwt.sign({username : username},process.env.ACCESS_TOKEN_SECRET,{
       expiresIn: process.env.ACCESS_TOKEN_EXPIRE
     });
-    const refreshToken = jwt.sign({username : username},process.env.REFRESH_TOKEN_SECRET);
+    return accessToken;
+}   
+exports.generateRefreshToken = async (username) => {
+  const refreshToken = jwt.sign({username : username},process.env.REFRESH_TOKEN_SECRET);
+  const user = await MongoUser.findOne({username});
+  user.refreshTokens.push(refreshToken);
+  user.save(function(err,result){
+    if (err){
+        console.log(err);
+    }
+    else{
+        console.log(result)
+    }
+  })
+  return refreshToken;
+} 
 
-    return {accessToken,refreshToken};
-}
-
-exports.clearToken = () => {
-  let cookieOptions;
-  if (process.env.NODE_ENV === "test") {
-    cookieOptions = {
-      expires: new Date(Date.now() + 1* 1000),
-      httponly: true,
-    };
-  } 
-  else if ( process.env.NODE_ENV === 'production') {
-    cookieOptions = {
-      expires: new Date(Date.now() + 1* 1000),
-      secure: true,
-      sameSite: "None",
-    };
+exports.clearSingleToken = async (refreshToken) => {
+  try {
+    await MongoUser.findOneAndUpdate(
+      { refreshTokens: refreshToken },
+      { $pull: { refreshTokens: refreshToken } },
+      { new: true }
+    );
+  } catch (error) {
+    console.error(error);
   }
-  return cookieOptions;
 }
   

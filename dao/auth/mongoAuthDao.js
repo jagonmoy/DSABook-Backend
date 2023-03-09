@@ -14,9 +14,7 @@ class MongoAuthDao extends AuthDao {
     }
     async signinUser(req) {
         const {email,password} = req.body;
-        console.log("Dao er vitor")
         let user = await mongoUser.findOne({email}).select('password');
-        console.log(user.password)
         if (!user) return "Incorrect Email" ;
         if (!await user.matchPasswords(password,user.password)) return "Password is not correct";
         user = await mongoUser.findById(user._id);

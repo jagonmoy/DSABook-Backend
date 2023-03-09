@@ -2,37 +2,49 @@ const {promisify} = require('util')
 const contentNegotiation = require("../utils/contentNegotiation")
 const jwt = require('jsonwebtoken')
 
-exports.isSignedIn = async(req, res,next) => {
+exports.isSignedOut = async(req,res,next) => {
     try {
-      const token = req.headers.authorization;
-      if (typeof token === "undefined" || token === '') {
-        console.log("hello")
-        next()
-      }
-      else {
-      const decoder = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
-      if (decoder.username !== "undefined") return contentNegotiation.sendErrorResponse(403,"Sign Out First And Then Try Again!",req,res,null);
-      next()
-      }
+        console.log(req.headers);
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+        console.log("hi " ,token);
+        if (token == null || token === undefined) next() ;
+        jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err) => {
+            if(!err) return contentNegotiation.sendErrorResponse(403,"Sign Out First And Then Try Again!",req,res,null);
+            next();
+        })
     } 
     catch (error) {
-      console.log("kireee")
-      return contentNegotiation.sendErrorResponse(404,error.message,req,res,null);
+        return contentNegotiation.sendErrorResponse(404,error.message,req,res,null);
     }
 };
-exports.notSignedIn = async(req, res,next) => {
+exports.isSignedin = async(req,res,next) => {
     try {
-       const token = req.cookies.jwt;
-       if (typeof token === "undefined" || token === '') {
-           return contentNegotiation.sendErrorResponse(403,"Sign in First And Then Try Again!",req,res,null);
-       }
-       else {
-       const decoder = await promisify(jwt.verify)(token,process.env.JWT_SECRET);
-       if (decoder.username === "undefined") return contentNegotiation.sendErrorResponse(403,"Sign in First And Then Try Again!",req,res,null);
-       next()
-       }
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+        if (token == null) return contentNegotiation.sendErrorResponse(403,"Sign in First And Then Try Again!",req,res,null);
+        jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err) => {
+          if(err) return contentNegotiation.sendErrorResponse(403,"Sign in First And Then Try Again!",req,res,null);
+          next();
+        })
     } 
     catch (error) {
-      return contentNegotiation.sendErrorResponse(404,error.message,req,res,null);
+        return contentNegotiation.sendErrorResponse(404,error.message,req,res,null);
+    }
+};
+exports.refreshTokenCheck = async(req,res,next) => {
+    try {
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+        if (token == null) return contentNegotiation.sendErrorResponse(403,"Refresh token not present in header",req,res,null);
+        jwt.verify(token,process.env.REFRESH_TOKEN_SECRET,(err,decoded) => {
+          if(err) return contentNegotiation.sendErrorResponse(403,"Refresh token not present in header",req,res,null);
+          req.username = decoded.username;
+          console.log(req.username)
+          next();
+        })
+    } 
+    catch (error) {
+        return contentNegotiation.sendErrorResponse(404,error.message,req,res,null);
     }
 };

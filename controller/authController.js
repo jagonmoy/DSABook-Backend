@@ -24,7 +24,6 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res) => {
   try {
-    console.log("hey")
     const authServiceSignInResponse = await authService.signinUser(req);
     let user;
     if (typeof authServiceSignInResponse === "string") {
@@ -32,19 +31,23 @@ exports.signin = async (req, res) => {
       return contentNegotiation.sendErrorResponse(401,authServiceSignInResponse,req,res);
     }
     else user = authServiceSignInResponse;
-    // const {token,cookieOptions} = JWTToken.sendJWTToken(user.username)
-    const {accessToken,refreshToken} = JWTToken.generateTokens(user.username);
-
-    res.headers.set('Authorization',`Bearer ${accessToken}`);
+    const accessToken = JWTToken.generateAccessToken(user.username);
+    const refreshToken = await JWTToken.generateRefreshToken(user.username);
+    console.log(accessToken,refreshToken);
     return contentNegotiation.sendResponse(200,{accessToken : accessToken, refreshToken: refreshToken},req,res);
   } catch (error) {
     return contentNegotiation.sendErrorResponse(401,error.message,req,res);
   }
  };
  exports.signout = async (req, res) => {
-      
-  const cookieOptions  = JWTToken.clearToken();
-  res.cookie("jwt",'',cookieOptions)
+  const refreshToken = req.body.token ; 
+  JWTToken.clearSingleToken(refreshToken);
   return contentNegotiation.sendResponse(200,"Signed Out Successfully!",req,res);
  };
+
+ exports.getNewAccessToken = async (req,res) => {
+    const username = req.username ;
+    const accessToken = JWTToken.generateAccessToken(username);
+    return contentNegotiation.sendResponse(200,{accessToken : accessToken},req,res);
+ }
  
