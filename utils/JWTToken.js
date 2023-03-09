@@ -24,15 +24,19 @@ exports.generateRefreshToken = async (username) => {
   return refreshToken;
 } 
 
-exports.clearSingleToken = async (refreshToken) => {
-  try {
-    await MongoUser.findOneAndUpdate(
-      { refreshTokens: refreshToken },
+exports.clearSingleToken = async (refreshToken,username) => {
+    const user = await MongoUser.findOneAndUpdate(
+      { username: username },
       { $pull: { refreshTokens: refreshToken } },
       { new: true }
     );
-  } catch (error) {
-    console.error(error);
-  }
+    user.save(function(err,result){
+      if (err){
+          console.log(err);
+      }
+      else{
+          console.log(result)
+      }
+    })
 }
   

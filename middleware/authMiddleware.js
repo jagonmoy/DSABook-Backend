@@ -1,5 +1,6 @@
 const contentNegotiation = require("../utils/contentNegotiation")
 const jwt = require('jsonwebtoken')
+const MongoUser = require("../models/userModel");
 
 exports.checkStatus = async(req,res,next) => {
     try {
@@ -19,12 +20,13 @@ exports.refreshTokenCheck = async(req,res,next) => {
     try {
         const token = req.body.refreshToken;
         if(!token) return contentNegotiation.sendErrorResponse(400,"Refresh token is not present",req,res,null);
-        else jwt.verify(token,process.env.REFRESH_TOKEN_SECRET,(err,decoded) => {
+        else jwt.verify(token,process.env.REFRESH_TOKEN_SECRET, async (err,decoded) => {
           if(err) return contentNegotiation.sendErrorResponse(401,"Refresh token is not valid",req,res,null);
-          
           req.username = decoded.username;
-          console.log(req.username)
-          next();
+          const user = await MongoUser.findOne({ username: req.username });
+          const refreshTokenExists = user.refreshTokens.includes(token);
+          if(!refreshTokenExists) return contentNegotiation.sendErrorResponse(404,"Refresh token Does not Exist!",req,res,null);
+          else next();
         })
     } 
     catch (error) {

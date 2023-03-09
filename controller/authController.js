@@ -41,7 +41,7 @@ exports.signin = async (req, res) => {
  };
  exports.signout = async (req, res) => {
   const refreshToken = req.body.refreshToken ; 
-  JWTToken.clearSingleToken(refreshToken);
+  JWTToken.clearSingleToken(refreshToken,req.username);
   return contentNegotiation.sendResponse(200,"Signed Out Successfully!",req,res);
  };
 
