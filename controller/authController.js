@@ -33,14 +33,14 @@ exports.signin = async (req, res) => {
     else user = authServiceSignInResponse;
     const accessToken = JWTToken.generateAccessToken(user.username);
     const refreshToken = await JWTToken.generateRefreshToken(user.username);
-    console.log(accessToken,refreshToken);
+  
     return contentNegotiation.sendResponse(200,{accessToken : accessToken, refreshToken: refreshToken},req,res);
   } catch (error) {
     return contentNegotiation.sendErrorResponse(401,error.message,req,res);
   }
  };
  exports.signout = async (req, res) => {
-  const refreshToken = req.body.token ; 
+  const refreshToken = req.body.refreshToken ; 
   JWTToken.clearSingleToken(refreshToken);
   return contentNegotiation.sendResponse(200,"Signed Out Successfully!",req,res);
  };
