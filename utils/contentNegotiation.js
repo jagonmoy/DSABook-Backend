@@ -6,28 +6,25 @@ exports.sendResponse = (statusCode,data,req,res) => {
         if(!data) res.sendStatus(statusCode);
         else {
             res.type(format);
-            res.status(statusCode).send(js2xmlparser.parse("data",JSON.parse(JSON.stringify({format,data}))));
+            res.status(statusCode).send(js2xmlparser.parse("data",JSON.parse(JSON.stringify(data))));
         }
     }
     else {
         if(!data) res.sendStatus(statusCode);
         else {
-            res.status(statusCode).json({
-                format,
+            res.status(statusCode).json(
                 data
-            });  
+            );  
         }
     }
 }
 exports.sendErrorResponse = (statusCode,data,req,res) => {
     const format = req.headers.accept;
     if ( format === "application/xml") {
-        res.type(format);
-        res.status(statusCode).send(js2xmlparser.parse("data",JSON.parse(JSON.stringify({format,data}))));
+        res.status(statusCode).send(js2xmlparser.parse("data",JSON.parse(JSON.stringify(data))));
     }
     else {
         res.status(statusCode).json({
-            format,
             errors : [
                 notUnique = data
             ]
