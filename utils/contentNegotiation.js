@@ -1,7 +1,6 @@
 const js2xmlparser = require("js2xmlparser");
 
 exports.sendResponse = (statusCode,data,req,res) => {
-    console.log(!data);
     const format = req.headers.accept;
     if ( format === "application/xml") {
         if(!data) res.sendStatus(statusCode);
