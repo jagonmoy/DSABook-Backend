@@ -17,7 +17,7 @@ app.use(cookieParser())
 app.use(
     cors({
       credentials: true,
-      origin: 'http://localhost:3000',
+      origin: process.env.FRONTEND_URL,
       allowedHeaders: '*'
     })
   );
@@ -26,8 +26,8 @@ app.use(morgan('dev'));
 app.use('/api/blogs',blogRouter);
 app.use('/api/users',userRouter);
 app.use('/api/auth',authRouter);
-app.use('*',(req,res) => {
-  res.sendFile(path.resolve('views/apiRoutes.html'));
-})
+// app.use('*',(req,res) => {
+//   res.sendFile(path.resolve('views/apiRoutes.html'));
+// })
 
 module.exports = app ;
