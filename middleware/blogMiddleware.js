@@ -10,6 +10,7 @@ const userService = new UserService(mongoUserDao);
 exports.protect = async (req,res,next) => {
     try {
       const authHeader = req.headers['authorization'];
+      // console.log(authHeader);
       const token = await (authHeader && authHeader.split(' ')[1]);
       if (!token) return contentNegotiation.sendErrorResponse(401,"Access token is null",req,res,null);
       else jwt.verify(token,process.env.ACCESS_TOKEN_SECRET, async (err,decoded) =>  {

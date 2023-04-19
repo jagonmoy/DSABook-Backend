@@ -14,8 +14,7 @@ exports.signupUserValidation = () => {
 }
  exports.signinUserValidation = () => {
   return [
-    check('email','Email field should not be Empty').trim().notEmpty(),
-    check('email','Email field should be valid').trim().isEmail(),
+    check('username','username field should not be Empty').trim().notEmpty(),
     check('password','Password filed should not be Empty').notEmpty(),
    ]
 }
@@ -27,9 +26,6 @@ exports.validate = (req, res, next) => {
  }
  const extractedErrors = []
  errors.array().map(err => extractedErrors.push(err.msg))
- 
- return res.status(422).json({
-   message: "request failed",
-   errors: extractedErrors
- })
+ console.log(extractedErrors)
+ return res.status(422).json(extractedErrors)
 }

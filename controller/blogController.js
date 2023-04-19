@@ -36,6 +36,7 @@ exports.getBlog = async (req, res) => {
 exports.createBlog = async (req, res) => {
   try {
     const newBlog = await blogService.createBlog(req);
+    console.log(newBlog)
     return contentNegotiation.sendResponse(201,newBlog,req,res)
   } catch (error) {
     return contentNegotiation.sendErrorResponse(404,"Blog Creation Unsuccessful",req,res) 
@@ -46,7 +47,7 @@ exports.updateBlog = async (req, res) => {
   try {
     let blog = await blogService.getBlog(req);
     if (typeof blog === "string") return contentNegotiation.sendErrorResponse(404,blog,req,res)
-    if (blog.username !== req.body.username) return contentNegotiation.sendErrorResponse(403,"Not Have permission to Update",req,res)
+    if (blog.author !== req.body.username) return contentNegotiation.sendErrorResponse(403,"Not Have permission to Update",req,res)
     blog = await blogService.updateBlog(req);
     return contentNegotiation.sendResponse(200,blog,req,res)
   } catch (error) {
@@ -58,7 +59,7 @@ exports.deleteBlog = async (req, res) => {
   try {
     const blog = await blogService.getBlog(req);
     if (typeof blog === "string") return contentNegotiation.sendErrorResponse(404,blog,req,res)
-    if (blog.username !== req.body.username && req.body.username !== "admin") return contentNegotiation.sendErrorResponse(403, "Not Have permission to delete",req,res)
+    if (blog.author !== req.body.username && req.body.username !== "admin") return contentNegotiation.sendErrorResponse(403, "Not Have permission to delete",req,res)
     await blogService.deleteBlog(req);
     return contentNegotiation.sendResponse(200,"Blog Deleted",req,res)
   } catch (error) {

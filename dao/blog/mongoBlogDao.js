@@ -29,8 +29,11 @@ class MongoBlogDao extends BlogDao {
         return new BlogDto(blog) ;
     }
     async createBlog(req) {
+        req.body.author = req.body.username 
+        delete req.body.username;
         let newBlog = await MongoBlog.create(req.body);
-        const username = req.body.username;
+        const username = req.body.author;
+        console.log(username)
         const user = await MongoUser.findOne({username});
         user.blogs.push(newBlog);
         user.save(function(err,result){
@@ -38,7 +41,7 @@ class MongoBlogDao extends BlogDao {
               console.log(err);
           }
           else{
-              console.log(result)
+            console.log(result)
           }
         })
         return newBlog;

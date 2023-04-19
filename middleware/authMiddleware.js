@@ -5,6 +5,7 @@ const MongoUser = require("../models/userModel");
 exports.checkStatus = async(req,res,next) => {
     try {
         const authHeader = req.headers['authorization'];
+        console.log(authHeader);
         const token = await (authHeader && authHeader.split(' ')[1]);
         if (!token) next() ;
         else jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err) => {

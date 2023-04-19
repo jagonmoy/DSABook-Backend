@@ -12,7 +12,7 @@ exports.generateAccessToken = (username) => {
 exports.generateRefreshToken = async (username) => {
   const refreshToken = jwt.sign({username : username},process.env.REFRESH_TOKEN_SECRET);
   const user = await MongoUser.findOne({username});
-  user.refreshTokens.push(refreshToken);
+  user.tokens.push(refreshToken);
   user.save(function(err,result){
     if (err){
         console.log(err);

@@ -1,7 +1,7 @@
 const contentNegotiation = require("../utils/contentNegotiation")
 const {AuthService} = require("../service/authService")
 const {MongoAuthDao} = require("../dao/auth/mongoAuthDao")
-const  JWTToken = require("../utils/JWTToken")
+const JWTToken = require("../utils/JWTToken")
 const dotenv = require('dotenv');
 dotenv.config({path : '../config.env'})
 
@@ -25,6 +25,7 @@ exports.signup = async (req, res) => {
 exports.signin = async (req, res) => {
   try {
     const authServiceSignInResponse = await authService.signinUser(req);
+    // console.log(req.body)
     let user;
     if (typeof authServiceSignInResponse === "string") {
       console.log(authServiceSignInResponse);
@@ -33,7 +34,8 @@ exports.signin = async (req, res) => {
     else user = authServiceSignInResponse;
     const accessToken = JWTToken.generateAccessToken(user.username);
     const refreshToken = await JWTToken.generateRefreshToken(user.username);
-  
+    
+
     return contentNegotiation.sendResponse(200,{accessToken : accessToken, refreshToken: refreshToken},req,res);
   } catch (error) {
     return contentNegotiation.sendErrorResponse(401,error.message,req,res);
@@ -50,4 +52,5 @@ exports.signin = async (req, res) => {
     const accessToken = JWTToken.generateAccessToken(username);
     return contentNegotiation.sendResponse(200,{accessToken : accessToken},req,res);
  }
+
  
