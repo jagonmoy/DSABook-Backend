@@ -33,15 +33,14 @@ class MongoBlogDao extends BlogDao {
         delete req.body.username;
         let newBlog = await MongoBlog.create(req.body);
         const username = req.body.author;
-        console.log(username)
         const user = await MongoUser.findOne({username});
         user.blogs.push(newBlog);
         user.save(function(err,result){
           if (err){
-              console.log(err);
+            //   console.log(err);
           }
           else{
-            console.log(result)
+            // console.log(result)
           }
         })
         return newBlog;

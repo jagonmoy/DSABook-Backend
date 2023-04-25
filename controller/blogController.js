@@ -36,7 +36,6 @@ exports.getBlog = async (req, res) => {
 exports.createBlog = async (req, res) => {
   try {
     const newBlog = await blogService.createBlog(req);
-    console.log(newBlog)
     return contentNegotiation.sendResponse(201,newBlog,req,res)
   } catch (error) {
     return contentNegotiation.sendErrorResponse(404,"Blog Creation Unsuccessful",req,res) 

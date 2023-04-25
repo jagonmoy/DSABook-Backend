@@ -28,7 +28,6 @@ exports.signin = async (req, res) => {
     // console.log(req.body)
     let user;
     if (typeof authServiceSignInResponse === "string") {
-      console.log(authServiceSignInResponse);
       return contentNegotiation.sendErrorResponse(401,authServiceSignInResponse,req,res);
     }
     else user = authServiceSignInResponse;
