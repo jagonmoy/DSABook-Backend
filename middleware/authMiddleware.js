@@ -5,7 +5,6 @@ const MongoUser = require("../models/userModel");
 exports.checkStatus = async(req,res,next) => {
     try {
         const authHeader = req.headers['authorization'];
-        // console.log(authHeader);
         const token = await (authHeader && authHeader.split(' ')[1]);
         if (!token) next() ;
         else jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err) => {
@@ -19,9 +18,7 @@ exports.checkStatus = async(req,res,next) => {
 };
 exports.refreshTokenCheck = async(req,res,next) => {
     try {
-        console.log('asdasdasd');
-        const {refreshToken: token} = req.body.refreshToken;
-        console.log(token);
+        const token = req.body.refreshToken;
         if(!token) return contentNegotiation.sendErrorResponse(400,"Refresh token is not present",req,res,null);
         else jwt.verify(token,process.env.REFRESH_TOKEN_SECRET, async (err,decoded) => {
           if(err) return contentNegotiation.sendErrorResponse(401,"Refresh token is not valid",req,res,null);
