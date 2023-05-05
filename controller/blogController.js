@@ -12,8 +12,7 @@ exports.blogService = blogService ;
 exports.getAllBlogs = async (req, res) => {
   try {
       const blogs = await blogService.getAllBlogs(req);
-      if (typeof blogs === "string") return contentNegotiation.sendErrorResponse(404,blogs,req,res)
-      else return contentNegotiation.sendResponse(200,blogs,req,res)
+      return contentNegotiation.sendResponse(200,blogs,req,res)
   } 
   catch (error) { 
     return contentNegotiation.sendErrorResponse(404,error.message,req,res)    
