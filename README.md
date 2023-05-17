@@ -111,10 +111,10 @@ A sample config file can be like this , <br><br>
 DATABASE=mongodb+srv://username:password@cluster0.sxo2i.mongodb.net/projectName?retryWrites=true&w=majority
 HOST=0.0.0.0
 PORT=3010
-ACCESS_TOKEN_EXPIRE=25m
+ACCESS_TOKEN_EXPIRE=2m
 ACCESS_TOKEN_SECRET=thisisaccesstokensecret
 REFRESH_TOKEN_SECRET=thisisrefreshtokensecret
-FRONTEND_URL=http://localhost:3000
+FRONTEND_URL=*
 </pre>
 <br>
 ### Step 5 :
