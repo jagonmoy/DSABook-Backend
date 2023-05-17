@@ -15,10 +15,10 @@ exports.generateRefreshToken = async (username) => {
   user.tokens.push(refreshToken);
   user.save(function(err,result){
     if (err){
-        console.log(err);
+        // console.log(err);
     }
     else{
-        console.log(result)
+        // console.log(result)
     }
   })
   return refreshToken;
@@ -32,10 +32,10 @@ exports.clearSingleToken = async (refreshToken,username) => {
     );
     user.save(function(err,result){
       if (err){
-          console.log(err);
+          // console.log(err);
       }
       else{
-          console.log(result)
+          // console.log(result)
       }
     })
 }

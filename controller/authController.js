@@ -25,17 +25,14 @@ exports.signup = async (req, res) => {
 exports.signin = async (req, res) => {
   try {
     const authServiceSignInResponse = await authService.signinUser(req);
-    // console.log(req.body)
     let user;
     if (typeof authServiceSignInResponse === "string") {
-      console.log(authServiceSignInResponse);
       return contentNegotiation.sendErrorResponse(401,authServiceSignInResponse,req,res);
     }
     else user = authServiceSignInResponse;
     const accessToken = JWTToken.generateAccessToken(user.username);
     const refreshToken = await JWTToken.generateRefreshToken(user.username);
     
-
     return contentNegotiation.sendResponse(200,{accessToken : accessToken, refreshToken: refreshToken},req,res);
   } catch (error) {
     return contentNegotiation.sendErrorResponse(401,error.message,req,res);

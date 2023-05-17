@@ -26,6 +26,9 @@ app.use(morgan('dev'));
 app.use('/api/blogs',blogRouter);
 app.use('/api/users',userRouter);
 app.use('/api/auth',authRouter);
+app.get('/health',(req,res)=>{
+  res.sendStatus(200)
+})
 // app.use('*',(req,res) => {
 //   res.sendFile(path.resolve('views/apiRoutes.html'));
 // })

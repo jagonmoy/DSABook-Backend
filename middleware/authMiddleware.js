@@ -5,7 +5,6 @@ const MongoUser = require("../models/userModel");
 exports.checkStatus = async(req,res,next) => {
     try {
         const authHeader = req.headers['authorization'];
-        console.log(authHeader);
         const token = await (authHeader && authHeader.split(' ')[1]);
         if (!token) next() ;
         else jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err) => {
@@ -25,7 +24,7 @@ exports.refreshTokenCheck = async(req,res,next) => {
           if(err) return contentNegotiation.sendErrorResponse(401,"Refresh token is not valid",req,res,null);
           req.username = decoded.username;
           const user = await MongoUser.findOne({ username: req.username });
-          const refreshTokenExists = user.refreshTokens.includes(token);
+          const refreshTokenExists = user.tokens.includes(token);
           if(!refreshTokenExists) return contentNegotiation.sendErrorResponse(404,"Refresh token Does not Exist!",req,res,null);
           else next();
         })

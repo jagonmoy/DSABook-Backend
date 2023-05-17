@@ -1,4 +1,5 @@
 const {validationResult,check} = require('express-validator')
+
  
 exports.signupUserValidation = () => {
  return [
@@ -14,8 +15,8 @@ exports.signupUserValidation = () => {
 }
  exports.signinUserValidation = () => {
   return [
-    check('username','username field should not be Empty').trim().notEmpty(),
-    check('password','Password filed should not be Empty').notEmpty(),
+    check('username','Username field should not be empty').trim().notEmpty(),
+    check('password','Password filed should not be empty').notEmpty(),
    ]
 }
  
@@ -26,6 +27,6 @@ exports.validate = (req, res, next) => {
  }
  const extractedErrors = []
  errors.array().map(err => extractedErrors.push(err.msg))
- console.log(extractedErrors)
- return res.status(422).json(extractedErrors)
+//  console.log(extractedErrors)
+ return res.status(422).json(extractedErrors[0])
 }

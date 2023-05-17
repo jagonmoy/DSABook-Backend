@@ -21,6 +21,6 @@ exports.validate = (req, res, next) => {
  }
  const extractedErrors = []
  errors.array().map(err => extractedErrors.push(err.msg))
- console.log(extractedErrors)
- return res.status(422).json(extractedErrors)
+//  console.log(extractedErrors)
+ return res.status(422).json(extractedErrors[0])
 }

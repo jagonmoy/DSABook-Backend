@@ -12,8 +12,7 @@ exports.blogService = blogService ;
 exports.getAllBlogs = async (req, res) => {
   try {
       const blogs = await blogService.getAllBlogs(req);
-      if (typeof blogs === "string") return contentNegotiation.sendErrorResponse(404,blogs,req,res)
-      else return contentNegotiation.sendResponse(200,blogs,req,res)
+      return contentNegotiation.sendResponse(200,blogs,req,res)
   } 
   catch (error) { 
     return contentNegotiation.sendErrorResponse(404,error.message,req,res)    
@@ -36,7 +35,6 @@ exports.getBlog = async (req, res) => {
 exports.createBlog = async (req, res) => {
   try {
     const newBlog = await blogService.createBlog(req);
-    console.log(newBlog)
     return contentNegotiation.sendResponse(201,newBlog,req,res)
   } catch (error) {
     return contentNegotiation.sendErrorResponse(404,"Blog Creation Unsuccessful",req,res) 
